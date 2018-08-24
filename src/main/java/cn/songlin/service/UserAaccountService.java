@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yonyou.multidatasource.comm.TargetDataSource;
+
 import cn.hutool.core.bean.BeanUtil;
 import cn.songlin.dto.UserAccountDto;
 import cn.songlin.dto.UserLoginDto;
@@ -50,6 +52,7 @@ public class UserAaccountService {
 		mapper.insertSelective(record);
 	}
 
+	@TargetDataSource(customDataSourceKey="multi")
 	public UserAccount login(UserLoginDto userLoginDto) {
 		UserAccount userAccount = mapper.login(userLoginDto);// 支持昵称，用户名，电话登录
 		if (userAccount != null) {// 登陆成功

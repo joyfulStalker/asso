@@ -1,15 +1,6 @@
 server:
   port: 8090
-#配置中心读取配置文件
 spring:
-#  application:
-#    name: server-config
-#  cloud:
-#    config:
-#      uri:
-#      - 192.168.20.100:8888
-#      name: asso
-#      profile: dev
   aop: 
     auto: true
   rabbitmq:
@@ -40,3 +31,22 @@ mytest:
   name: zhangsan
   pwd: 123
 zhangsan: hh
+multi: 
+  datasource:
+    enable-dynamic: true  #开启多数据源动态配置
+    custom: multi,community #自定义多数据源
+    default: #默认配置，必配
+      driverclass: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.20.100:3306/community?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: root
+    multi: 
+      driverclass: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.20.100:3306/multi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: root
+    community: 
+      driverclass: ${db.asso.driverclass}
+      url: ${db.asso.url}
+      username: ${db.asso.name}
+      password: root
