@@ -16,7 +16,7 @@ import cn.songlin.utils.ValidateUtil;
 
 @Service
 @SuppressWarnings(value = { "all" })
-public class UserAaccountService {
+public class UserAccountService {
 
 	@Autowired
 	private UserAccountMapper mapper;

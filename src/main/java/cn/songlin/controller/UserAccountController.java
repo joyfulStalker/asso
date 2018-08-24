@@ -24,7 +24,7 @@ import cn.songlin.dto.UserLoginDto;
 import cn.songlin.entity.UserAccount;
 import cn.songlin.exception.CommunityException;
 import cn.songlin.service.SensitiveWordsService;
-import cn.songlin.service.UserAaccountService;
+import cn.songlin.service.UserAccountService;
 import cn.songlin.utils.MyStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +39,7 @@ public class UserAccountController {
 	private HttpServletRequest request;
 
 	@Autowired
-	private UserAaccountService userAaccountService;
+	private UserAccountService userAaccountService;
 
 	@Autowired
 	private SensitiveWordsService sensitiveWordsService;

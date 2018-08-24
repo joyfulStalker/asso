@@ -2,9 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>cn.lin.association</groupId>
+	<groupId>com.lsl.association</groupId>
 	<artifactId>association</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.1-RELEASE</version>
 	<!-- Spring boot的项目必须要将parent设置为spring boot的parent， 该parent包含了大量默认的配置，大大简化了我们的开发。 -->
 	<!-- <parent> -->
 	<!-- <groupId>org.springframework.boot</groupId> -->
