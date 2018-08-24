@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    config:
+      uri:
+      - http://192.168.20.100:8888
+      name: asso
+      profile: dev

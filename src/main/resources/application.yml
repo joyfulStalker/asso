@@ -1,0 +1,42 @@
+server:
+  port: 8090
+#配置中心读取配置文件
+spring:
+#  application:
+#    name: server-config
+#  cloud:
+#    config:
+#      uri:
+#      - 192.168.20.100:8888
+#      name: asso
+#      profile: dev
+  aop: 
+    auto: true
+  rabbitmq:
+    host: ${rmq.asso.host}
+    virtual-host: ${rmq.asso.virtual-host}
+    port: ${rmq.asso.port}
+    username: ${rmq.asso.username}
+    password: ${rmq.asso.password}
+  datasource:
+    driver-class-name: ${db.asso.driverclass}
+    url: ${db.asso.url}
+    username: ${db.asso.name}
+    password: ${db.asso.pwd}
+  resources:
+    static-locations:
+    - classpath:/static/html/
+  redis:
+    host: ${rd.asso.host}
+    port: ${rd.asso.port}
+mybatis:
+  configuration:
+    auto-mapping-behavior: full
+  mapper-locations: classpath:/mapper/*Mapper.xml
+logging:
+  level:
+    cn.songlin.mapper : debug
+mytest: 
+  name: zhangsan
+  pwd: 123
+zhangsan: hh

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.songlin.mapper.UserAccountMapper" >
+  <resultMap id="BaseResultMap" type="cn.songlin.entity.UserAccount" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="user_type" property="userType" jdbcType="TINYINT" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="register_date" property="registerDate" jdbcType="TIMESTAMP" />
+    <result column="last_login_date" property="lastLoginDate" jdbcType="TIMESTAMP" />
+    <result column="fans" property="fans" jdbcType="BIGINT" />
+    <result column="medal_count" property="medalCount" jdbcType="INTEGER" />
+    <result column="nick_change_times" property="nickChangeTimes" jdbcType="INTEGER" />
+    <result column="last_nickchange_time" property="lastNickchangeTime" jdbcType="TIMESTAMP" />
+    <result column="bansend_timelength" property="bansendTimelength" jdbcType="BIGINT" />
+    <result column="bansend_starttime" property="bansendStarttime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="checkUserName" resultType="int">
+  	SELECT count(1) FROM user_account where name = #{name} or nick_name = #{name};
+  </select>
+  
+  <select id="login" resultMap="BaseResultMap">
+  	SELECT * FROM user_account where password = #{userLoginDto.password} and (name = #{userLoginDto.userName} or nick_name = #{userLoginDto.userName} or mobile_phone = #{userLoginDto.userName});
+  </select>
+</mapper>
