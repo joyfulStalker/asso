@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yonyou.multidatasource.comm.TargetDataSource;
+import com.lsl.multidatasource.comm.TargetDataSource;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.songlin.dto.UserAccountDto;
