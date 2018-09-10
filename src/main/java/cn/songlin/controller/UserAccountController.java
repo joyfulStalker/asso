@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.songlin.annotation.Monitor;
+import cn.songlin.annotation.TrackLog;
 import cn.songlin.comm.ConstantUtil;
 import cn.songlin.dto.UserAccountDto;
 import cn.songlin.dto.UserLoginDto;
@@ -63,8 +64,9 @@ public class UserAccountController {
 	}
 
 	@PostMapping("login")
-	@Monitor
 	@ApiOperation(value = "用户登录")
+	@TrackLog
+	@Monitor
 	public ResponseEntity<String> login(@RequestBody UserLoginDto userLoginDto) {
 		UserAccount userAccount = userAaccountService.login(userLoginDto);
 		if (userAccount != null) {// 登陆成功
