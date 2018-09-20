@@ -7,6 +7,8 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.songlin.annotation.Monitor;
-import cn.songlin.annotation.TrackLog;
 import cn.songlin.comm.ConstantUtil;
 import cn.songlin.dto.UserAccountDto;
 import cn.songlin.dto.UserLoginDto;
@@ -36,6 +37,8 @@ import io.swagger.annotations.ApiOperation;
 @SuppressWarnings(value = { "all" })
 public class UserAccountController {
 
+	private static final Logger logger = LoggerFactory.getLogger(UserAccountController.class);
+	
 	@Autowired
 	private HttpServletRequest request;
 
@@ -44,7 +47,7 @@ public class UserAccountController {
 
 	@Autowired
 	private SensitiveWordsService sensitiveWordsService;
-	
+
 	@Autowired
 	private Environment env;
 
@@ -65,7 +68,7 @@ public class UserAccountController {
 
 	@PostMapping("login")
 	@ApiOperation(value = "用户登录")
-	@TrackLog
+	// @TrackLog//记录用户支付足迹
 	@Monitor
 	public ResponseEntity<String> login(@RequestBody UserLoginDto userLoginDto) {
 		UserAccount userAccount = userAaccountService.login(userLoginDto);
@@ -83,8 +86,8 @@ public class UserAccountController {
 	@Monitor
 	@ApiOperation(value = "测试system")
 	public ResponseEntity<Map> testProp() {
-		Map<String,Object> map = new HashMap<>();
-		
+		Map<String, Object> map = new HashMap<>();
+
 		Properties properties = System.getProperties();
 		Map<String, String> getenv = System.getenv();
 		String property = env.getProperty("mytest.name");
@@ -95,12 +98,12 @@ public class UserAccountController {
 		map.put("property1", property1);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("testMyUtil")
 	@Monitor
 	@ApiOperation(value = "测试我的工具类")
 	public ResponseEntity<Map> testMyUtil() {
-		Map<String,Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		String name = "name";
 		String phone = "15206668888";
 		String n = MyStringUtils.dealSensitivePhone(name, phone);

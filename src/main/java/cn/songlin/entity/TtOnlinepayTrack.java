@@ -195,4 +195,12 @@ public class TtOnlinepayTrack {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	@Override
+	public String toString() {
+		return "TtOnlinepayTrack [id=" + id + ", userid=" + userid + ", uri=" + uri + ", requestSource=" + requestSource
+				+ ", requestIp=" + requestIp + ", requestData=" + requestData + ", responeData=" + responeData
+				+ ", createTime=" + createTime + "]";
+	}
+    
 }

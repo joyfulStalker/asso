@@ -142,4 +142,11 @@ public class UserLog {
     public void setLogDataTime(Date logDataTime) {
         this.logDataTime = logDataTime;
     }
+
+	@Override
+	public String toString() {
+		return "UserLog [id=" + id + ", logUserid=" + logUserid + ", logUsername=" + logUsername + ", logUrl=" + logUrl
+				+ ", logIp=" + logIp + ", logDataTime=" + logDataTime + "]";
+	}
+    
 }

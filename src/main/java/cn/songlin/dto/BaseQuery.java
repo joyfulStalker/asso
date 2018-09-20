@@ -31,4 +31,10 @@ public class BaseQuery {
     public void setRows(Integer rows) {
         this.rows = rows;
     }
+
+	@Override
+	public String toString() {
+		return "BaseQuery [page=" + page + ", rows=" + rows + "]";
+	}
+    
 }

@@ -62,4 +62,10 @@ public class UserAccountDto {
 		this.qq = qq;
 	}
 
+	@Override
+	public String toString() {
+		return "UserAccountDto [name=" + name + ", mobilePhone=" + mobilePhone + ", password=" + password
+				+ ", nickName=" + nickName + ", email=" + email + ", qq=" + qq + "]";
+	}
+
 }

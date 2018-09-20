@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.songlin.mapper.TtErrReferMapper">
+  <resultMap id="BaseResultMap" type="cn.songlin.entity.TtErrRefer">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="err_id" jdbcType="BIGINT" property="errId" />
+    <result column="source_desc" jdbcType="VARCHAR" property="sourceDesc" />
+    <result column="source_url" jdbcType="VARCHAR" property="sourceUrl" />
+    <result column="is_useful" jdbcType="BIT" property="isUseful" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>

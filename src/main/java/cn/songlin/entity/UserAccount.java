@@ -435,4 +435,16 @@ public class UserAccount implements Serializable{
     public void setBansendStarttime(Date bansendStarttime) {
         this.bansendStarttime = bansendStarttime;
     }
+
+	@Override
+	public String toString() {
+		return "UserAccount [id=" + id + ", userId=" + userId + ", name=" + name + ", mobilePhone=" + mobilePhone
+				+ ", password=" + password + ", photoUrl=" + photoUrl + ", nickName=" + nickName + ", createDate="
+				+ createDate + ", updateDate=" + updateDate + ", userType=" + userType + ", email=" + email + ", qq="
+				+ qq + ", registerDate=" + registerDate + ", lastLoginDate=" + lastLoginDate + ", fans=" + fans
+				+ ", medalCount=" + medalCount + ", nickChangeTimes=" + nickChangeTimes + ", lastNickchangeTime="
+				+ lastNickchangeTime + ", bansendTimelength=" + bansendTimelength + ", bansendStarttime="
+				+ bansendStarttime + "]";
+	}
+    
 }

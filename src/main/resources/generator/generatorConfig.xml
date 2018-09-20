@@ -31,7 +31,11 @@
 			targetPackage="${targetMapperPackage}"
 			targetProject="${targetJavaProject}" type="XMLMAPPER" />
 
-		<table tableName="sensitive_words">
+		<table tableName="tt_err_collection">
+			<generatedKey column="id" sqlStatement="Mysql"
+				identity="true" />
+		</table>
+		<table tableName="tt_err_refer">
 			<generatedKey column="id" sqlStatement="Mysql"
 				identity="true" />
 		</table>

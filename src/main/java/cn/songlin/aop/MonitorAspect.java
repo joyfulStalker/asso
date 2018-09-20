@@ -29,6 +29,16 @@ public class MonitorAspect {
 		String methodName = pjp.getSignature().getName();
 		String fullMethodName = className + "." + methodName;
 		logger.info(fullMethodName + "将被调用");
+		// 请求参数
+		Object[] args = pjp.getArgs();// 参数
+		for (Object parm : args) {
+
+			Class<? extends Object> class1 = parm.getClass();
+			if (!"org.apache.catalina.connector.RequestFacade".equals(parm.getClass().getName())) {
+				logger.info("请求参数--参数类型：" + parm.getClass().getName() + "--参数值：" + parm);
+			}
+		}
+
 		long start = System.currentTimeMillis();
 		Object result = null;
 		result = pjp.proceed();

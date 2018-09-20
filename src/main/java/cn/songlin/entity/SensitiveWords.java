@@ -221,4 +221,12 @@ public class SensitiveWords {
     public void setCreateName(String createName) {
         this.createName = createName;
     }
+
+	@Override
+	public String toString() {
+		return "SensitiveWords [id=" + id + ", dealerCode=" + dealerCode + ", dealerName=" + dealerName
+				+ ", sensitiveWords=" + sensitiveWords + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", createBy=" + createBy + ", updateBy=" + updateBy + ", createName=" + createName + "]";
+	}
+    
 }
