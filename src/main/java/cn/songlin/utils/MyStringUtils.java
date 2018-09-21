@@ -78,4 +78,18 @@ public class MyStringUtils {
 	public static String dealSensitivePhone(String name, String phoneNum) {
 		return StringUtils.isEmpty(name) == false ? name : new StringBuilder(phoneNum).replace(3, 7, "****").toString();
 	}
+
+	/**
+	 * 数据库模糊查询字符处理
+	 * 
+	 * @author liusonglin
+	 * @date 2018年9月21日
+	 * @param str
+	 * @return
+	 */
+
+	public static String dealLikeStr(String str) {
+		return !StringUtils.isEmpty(str) ? "%" + str + "%" : null;
+	}
+
 }
