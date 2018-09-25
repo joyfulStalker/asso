@@ -1,4 +1,4 @@
-package cn.songlin.dto;
+package cn.songlin.dto.user;
 
 public class UserAccountDto {
 

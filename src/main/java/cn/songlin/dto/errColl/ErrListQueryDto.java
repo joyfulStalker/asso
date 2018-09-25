@@ -1,6 +1,6 @@
 package cn.songlin.dto.errColl;
 
-import cn.songlin.dto.BaseQuery;
+import cn.songlin.dto.base.BaseQuery;
 
 /**
  * 错误列表查询参数

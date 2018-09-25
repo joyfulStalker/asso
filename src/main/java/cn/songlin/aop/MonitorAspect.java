@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import cn.songlin.dto.base.BaseCode;
+import cn.songlin.dto.base.BaseResponseResult;
+
 /**
  * @author liusonglin
  * @date 2018年8月1日
@@ -44,6 +47,14 @@ public class MonitorAspect {
 		result = pjp.proceed();
 		long end = System.currentTimeMillis();
 		long elapsedMilliseconds = end - start;
+		
+		if (result instanceof BaseResponseResult) {
+			((BaseResponseResult) result).setResultCode(BaseCode.SUCCESS);
+		}
+		if (result != null && result instanceof BaseResponseResult) {
+			((BaseResponseResult) result).setElapsedMilliseconds(elapsedMilliseconds);
+		}
+		
 		logger.info(fullMethodName + "调用结束," + "执行耗时:" + elapsedMilliseconds + " 毫秒");
 
 		return result;

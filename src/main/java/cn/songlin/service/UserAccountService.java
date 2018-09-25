@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.songlin.dto.UserAccountDto;
-import cn.songlin.dto.UserLoginDto;
+import cn.songlin.dto.user.UserAccountDto;
+import cn.songlin.dto.user.UserLoginDto;
 import cn.songlin.entity.UserAccount;
 import cn.songlin.exception.CommunityException;
 import cn.songlin.mapper.UserAccountMapper;

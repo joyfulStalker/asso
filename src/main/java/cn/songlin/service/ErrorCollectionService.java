@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import cn.songlin.dto.ResponsePageResult;
+import cn.songlin.dto.base.ResponsePageResult;
 import cn.songlin.dto.errColl.ErrCollectionDto;
 import cn.songlin.dto.errColl.ErrListQueryDto;
 import cn.songlin.entity.TtErrCollection;
@@ -42,7 +42,7 @@ public class ErrorCollectionService {
 		}
 	}
 
-	public ResponsePageResult<List<ErrCollectionDto>> errlist(ErrListQueryDto queryDto) {
+	public ResponsePageResult errlist(ErrListQueryDto queryDto) {
 
 		PageHelper.startPage(queryDto.getPage(), queryDto.getRows());
 
@@ -55,7 +55,7 @@ public class ErrorCollectionService {
 
 		PageInfo<ErrCollectionDto> page = new PageInfo<>(list);
 
-		return new ResponsePageResult<List<ErrCollectionDto>>(page.getList(), page.getTotal());
+		return new ResponsePageResult(page.getList(), page.getTotal());
 	}
 
 }

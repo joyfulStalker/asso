@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.songlin.annotation.Monitor;
-import cn.songlin.dto.ResponsePageResult;
+import cn.songlin.dto.base.ResponseBeanResult;
+import cn.songlin.dto.base.ResponsePageResult;
 import cn.songlin.dto.errColl.ErrCollectionDto;
 import cn.songlin.dto.errColl.ErrListQueryDto;
 import cn.songlin.entity.TtErrCollection;
@@ -35,16 +36,16 @@ public class ErrorCollectionController {
 	@PostMapping("/errList")
 	@Monitor
 	@ApiOperation(value = "错误列表")
-	public ResponseEntity<ResponsePageResult<List<ErrCollectionDto>>> errList(@RequestBody ErrListQueryDto queryDto) {
-		ResponsePageResult<List<ErrCollectionDto>> responsePageResult = collService.errlist(queryDto);
-		return new ResponseEntity<>(responsePageResult, HttpStatus.OK);
+	public ResponsePageResult errList(@RequestBody ErrListQueryDto queryDto) {
+		ResponsePageResult responsePageResult = collService.errlist(queryDto);
+		return responsePageResult;
 	}
 
 	@PostMapping("/saveOrUpdate")
 	@Monitor
 	@ApiOperation(value = "新增bug或更新bug")
-	public ResponseEntity<Void> saveOrUpdate(@RequestBody TtErrCollection errColl) {
+	public ResponseBeanResult saveOrUpdate(@RequestBody TtErrCollection errColl) {
 		collService.saveOrUpdate(errColl);
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return new ResponseBeanResult();
 	}
 }

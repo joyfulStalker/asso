@@ -2,7 +2,7 @@ package cn.songlin.mapper;
 
 import org.apache.ibatis.annotations.Param;
 
-import cn.songlin.dto.UserLoginDto;
+import cn.songlin.dto.user.UserLoginDto;
 import cn.songlin.entity.UserAccount;
 import tk.mybatis.mapper.common.BaseMapper;
 

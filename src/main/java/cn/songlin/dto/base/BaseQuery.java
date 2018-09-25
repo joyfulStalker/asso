@@ -1,4 +1,4 @@
-package cn.songlin.dto;
+package cn.songlin.dto.base;
 
 import javax.persistence.Transient;
 
