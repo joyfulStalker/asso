@@ -1,6 +1,6 @@
 package cn.songlin.exception;
 
-public class CommunityException extends BizException {
+public class AssoException extends BizException {
 
 	private static final long serialVersionUID = 3252856823627098049L;
 

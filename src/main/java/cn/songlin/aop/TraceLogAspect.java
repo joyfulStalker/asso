@@ -13,19 +13,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.songlin.comm.ExceptionResult;
+import cn.songlin.dto.base.BaseCode;
+import cn.songlin.dto.base.ResponseBeanResult;
+import cn.songlin.dto.base.ResponsePageResult;
 import cn.songlin.entity.TtOnlinepayTrack;
-import cn.songlin.entity.UserAccount;
 import cn.songlin.exception.BizException;
-import cn.songlin.exception.CommunityException;
 import cn.songlin.mapper.TtOnlinepayTrackMapper;
 import cn.songlin.utils.ClientIpUtils;
 import cn.songlin.utils.UserLocal;
@@ -71,7 +69,7 @@ public class TraceLogAspect {
 
 			}
 		}
-		
+
 		entity.setRequestData(JSON.toJSONString(requestParm));// 需要存入数据库
 
 		entity.setUri(request.getRequestURI());// 请求地址
@@ -81,15 +79,17 @@ public class TraceLogAspect {
 		entity.setRequestSource(pjp.getTarget().getClass().getName() + "." + pjp.getSignature().getName());
 
 		entity.setRequestIp(ClientIpUtils.getClientIp(request));// 设置请求者ip地址
-		
+
 		Long userId = UserLocal.getLocalUser().getId();
-		
+
 		entity.setUserid(userId == null ? null : userId.toString());
 
 		// 处理返回结果
 		Object result = null;
 
 		Object errResult = null;
+
+		String resClass = pjp.getSignature().toLongString().split(" ")[1];// 获取返回值类型
 
 		boolean flag = true;
 
@@ -106,10 +106,8 @@ public class TraceLogAspect {
 			((Map) result).put("errType", e.getClass().getName());
 
 			((Map) result).put("errMsg", e.getMsg());
-			ExceptionResult exceptionResult = new ExceptionResult();
-			exceptionResult.setMsg(e.getMessage());
-			exceptionResult.setStatus(e.getCode());
-			errResult = new ResponseEntity<ExceptionResult>(exceptionResult, HttpStatus.OK);
+
+			errResult = getResponseInstance(resClass, e.getMsg(), e.getCode(), errResult);
 
 		} catch (Throwable e) {
 
@@ -121,10 +119,7 @@ public class TraceLogAspect {
 
 			((Map) result).put("errMsg", e.getMessage());
 
-			ExceptionResult exceptionResult = new ExceptionResult();
-			exceptionResult.setMsg(e.getMessage());
-			exceptionResult.setStatus(CommunityException.SYSTEM_ERR.getCode());
-			errResult = new ResponseEntity<ExceptionResult>(exceptionResult, HttpStatus.OK);
+			errResult = getResponseInstance(resClass, e.getMessage(), BaseCode.ERROR_UNKNOWN, errResult);
 
 		}
 
@@ -133,5 +128,15 @@ public class TraceLogAspect {
 		trackMapper.insert(entity);// 执行插入数据到数据库
 
 		return flag ? result : errResult;
+	}
+
+	private Object getResponseInstance(String resClass, String msg, Integer code, Object obj) {
+		if ("cn.songlin.dto.base.ResponseBeanResult".contains(resClass)) {
+			obj = new ResponseBeanResult(msg, code);
+		}
+		if ("cn.songlin.dto.base.ResponsePageResult".contains(resClass)) {
+			obj = new ResponsePageResult(msg, code);
+		}
+		return obj;
 	}
 }

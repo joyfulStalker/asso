@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +23,7 @@ import cn.songlin.dto.base.ResponseBeanResult;
 import cn.songlin.dto.user.UserAccountDto;
 import cn.songlin.dto.user.UserLoginDto;
 import cn.songlin.entity.UserAccount;
-import cn.songlin.exception.CommunityException;
+import cn.songlin.exception.AssoException;
 import cn.songlin.service.SensitiveWordsService;
 import cn.songlin.service.UserAccountService;
 import cn.songlin.utils.MyStringUtils;
@@ -39,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
 public class UserAccountController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserAccountController.class);
-	
+
 	@Autowired
 	private HttpServletRequest request;
 
@@ -54,6 +52,7 @@ public class UserAccountController {
 
 	@PostMapping("register")
 	@Monitor
+	// @TrackLog // 记录用户支付足迹
 	@ApiOperation(value = "用户注册")
 	public ResponseBeanResult register(@RequestBody UserAccountDto userAccountDto) {
 		// 过滤敏感词 含有敏感词禁止写入
@@ -61,7 +60,7 @@ public class UserAccountController {
 				ConstantUtil.SENSITIVEWORD_DEALER_CODE);
 		String name = sensitiveWordsService.useWords(userAccountDto.getName(), ConstantUtil.SENSITIVEWORD_DEALER_CODE);
 		if (!StringUtils.isEmpty(nickName) || !StringUtils.isEmpty(name)) {
-			throw new CommunityException().HIT_SENSITIVEWORD;// 含有敏感词禁止写入，提示请遵守社群规范
+			throw new AssoException().HIT_SENSITIVEWORD;// 含有敏感词禁止写入，提示请遵守社群规范
 		}
 		userAaccountService.register(userAccountDto);
 		return new ResponseBeanResult();
@@ -69,7 +68,6 @@ public class UserAccountController {
 
 	@PostMapping("login")
 	@ApiOperation(value = "用户登录")
-	// @TrackLog//记录用户支付足迹
 	@Monitor
 	public ResponseBeanResult<String> login(@RequestBody UserLoginDto userLoginDto) {
 		UserAccount userAccount = userAaccountService.login(userLoginDto);

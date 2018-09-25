@@ -14,7 +14,10 @@ public class ResponsePageResult extends BaseResponseResult {
 		this.data = data;
 		this.total = total;
 	}
-
+	public ResponsePageResult(String errMsg, Integer resultCode) {
+		this.resultCode = resultCode;
+		this.errMsg = errMsg;
+	}
 	private Object data;
 
 	private Long total;

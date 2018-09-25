@@ -9,7 +9,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.songlin.dto.user.UserAccountDto;
 import cn.songlin.dto.user.UserLoginDto;
 import cn.songlin.entity.UserAccount;
-import cn.songlin.exception.CommunityException;
+import cn.songlin.exception.AssoException;
 import cn.songlin.mapper.UserAccountMapper;
 import cn.songlin.utils.MyStringUtils;
 import cn.songlin.utils.ValidateUtil;
@@ -31,14 +31,14 @@ public class UserAccountService {
 
 	public void register(UserAccountDto userAccountDto) {
 		if (!ValidateUtil.checkMobilephone(userAccountDto.getMobilePhone())) {// 不是手机号
-			throw new CommunityException().NOT_MOBLIEPHONE;// 不是手机号
+			throw new AssoException().NOT_MOBLIEPHONE;// 不是手机号
 		}
 		if (userAccountDto.getEmail() != null && !ValidateUtil.checkEmail(userAccountDto.getEmail())) {
-			throw new CommunityException().NOT_EMAIL;// 不是邮箱号
+			throw new AssoException().NOT_EMAIL;// 不是邮箱号
 		}
 		if (mapper.checkUserName(userAccountDto.getName()) > 0
 				|| mapper.checkUserName(userAccountDto.getNickName()) > 0) {
-			throw new CommunityException().NICK_EXIST;// 该昵称已存在
+			throw new AssoException().NICK_EXIST;// 该昵称已存在
 		}
 		UserAccount record = new UserAccount();
 		BeanUtil.copyProperties(userAccountDto, record);

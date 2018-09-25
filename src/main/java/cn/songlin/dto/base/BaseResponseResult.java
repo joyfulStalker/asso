@@ -22,11 +22,11 @@ public class BaseResponseResult implements Serializable {
 		this.errMsg = errMsg;
 	}
 
-	private Integer resultCode;
+	protected Integer resultCode;
 
-	private String errMsg;
+	protected String errMsg;
 
-	private long elapsedMilliseconds;
+	protected long elapsedMilliseconds;
 
 	public Integer getResultCode() {
 		return resultCode;
