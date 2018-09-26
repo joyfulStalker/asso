@@ -58,4 +58,8 @@ public class ErrorCollectionService {
 		return new ResponsePageResult(page.getList(), page.getTotal());
 	}
 
+	public TtErrCollection detail(Long errCollId) {
+		return errMapper.selectByPrimaryKey(errCollId);
+	}
+
 }
