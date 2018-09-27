@@ -14,4 +14,5 @@ public class AssoException extends BizException {
 	//10021开头的为错误收集功能相关的
 	public static final BizException NO_ERR_DESCRIPTION = new BizException(10021001, "请填写错误描述");
 	public static final BizException NO_ERR_CATEGORY = new BizException(10021002, "请选择类别");
+	public static final BizException NO_REFER_SOURCEDESC = new BizException(10021003, "请填写参考来源");
 }

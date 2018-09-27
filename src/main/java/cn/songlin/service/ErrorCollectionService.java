@@ -66,6 +66,9 @@ public class ErrorCollectionService {
 		List<ErrReferDto> refers = dto.getRefers();
 		if(null != refers && refers.size() > 0) {
 			for (ErrReferDto errReferDto : refers) {
+				if(StringUtils.isEmpty(errReferDto.getSourceDesc())) {
+					throw new AssoException().NO_REFER_SOURCEDESC;
+				}
 				TtErrRefer errRefer = new TtErrRefer();
 				BeanUtils.copyProperties(errReferDto, errRefer);
 				errRefer.setErrId(errColl.getId());
