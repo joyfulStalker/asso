@@ -25,6 +25,8 @@ public class ErrListQueryDto extends BaseQuery {
 	 */
 	private String errSolution;
 
+	private String category;
+
 	public String getErrDescription() {
 		return errDescription;
 	}
@@ -49,10 +51,18 @@ public class ErrListQueryDto extends BaseQuery {
 		this.errSolution = errSolution;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	@Override
 	public String toString() {
 		return "ErrListQueryDto [errDescription=" + errDescription + ", errCauseBy=" + errCauseBy + ", errSolution="
-				+ errSolution + "]";
+				+ errSolution + ", category=" + category + "]";
 	}
 
 }

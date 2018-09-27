@@ -12,4 +12,6 @@ import tk.mybatis.mapper.common.BaseMapper;
 public interface TtErrCollectionMapper extends BaseMapper<TtErrCollection> {
 
 	List<ErrCollectionDto> errList(@Param("queryDto") ErrListQueryDto queryDto);
+
+	void errDel(@Param("errCollId")long errCollId);
 }

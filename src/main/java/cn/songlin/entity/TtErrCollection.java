@@ -49,6 +49,13 @@ public class TtErrCollection {
     private Date solveTime;
 
     /**
+     * 1:未删除 2:已删除
+     */
+    private Byte status;
+
+    private String category;
+
+    /**
      * 获取主键
      *
      * @return id - 主键
@@ -174,11 +181,35 @@ public class TtErrCollection {
         this.solveTime = solveTime;
     }
 
-	@Override
-	public String toString() {
-		return "TtErrCollection [id=" + id + ", errDescription=" + errDescription + ", errCauseBy=" + errCauseBy
-				+ ", errSolution=" + errSolution + ", createTime=" + createTime + ", updateTime=" + updateTime
-				+ ", solveTime=" + solveTime + "]";
-	}
-    
+    /**
+     * 获取1:未删除 2:已删除
+     *
+     * @return status - 1:未删除 2:已删除
+     */
+    public Byte getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置1:未删除 2:已删除
+     *
+     * @param status 1:未删除 2:已删除
+     */
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    /**
+     * @return category
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category
+     */
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

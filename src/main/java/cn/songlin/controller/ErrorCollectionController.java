@@ -1,13 +1,8 @@
 package cn.songlin.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.songlin.annotation.Monitor;
 import cn.songlin.dto.base.ResponseBeanResult;
 import cn.songlin.dto.base.ResponsePageResult;
-import cn.songlin.dto.errColl.ErrCollectionDto;
+import cn.songlin.dto.errColl.ErrCollectionAddDto;
 import cn.songlin.dto.errColl.ErrListQueryDto;
 import cn.songlin.entity.TtErrCollection;
 import cn.songlin.service.ErrorCollectionService;
@@ -37,6 +32,14 @@ public class ErrorCollectionController {
 	@Autowired
 	private ErrorCollectionService collService;
 
+	@PostMapping("/errDel")
+	@Monitor
+	@ApiOperation(value = "删除")
+	public ResponseBeanResult<Void> errDel(@RequestParam long errCollId) {
+		collService.errDel(errCollId);
+		return new ResponseBeanResult();
+	}
+	
 	@PostMapping("/errList")
 	@Monitor
 	@ApiOperation(value = "错误列表")
@@ -48,8 +51,8 @@ public class ErrorCollectionController {
 	@PostMapping("/saveOrUpdate")
 	@Monitor
 	@ApiOperation(value = "新增bug或更新bug")
-	public ResponseBeanResult saveOrUpdate(@RequestBody TtErrCollection errColl) {
-		collService.saveOrUpdate(errColl);
+	public ResponseBeanResult saveOrUpdate(@RequestBody ErrCollectionAddDto dto) {
+		collService.saveOrUpdate(dto);
 		return new ResponseBeanResult();
 	}
 	

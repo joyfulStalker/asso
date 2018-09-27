@@ -12,16 +12,21 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="solve_time" jdbcType="TIMESTAMP" property="solveTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
   </resultMap>
   
+  <update id="errDel">
+  	update tt_err_collection set status = 2 where id = #{errCollId};
+  </update>
   <select id="errList" resultType="cn.songlin.dto.errColl.ErrCollectionDto">
   	SELECT 
 	    id, err_description errDescription,err_cause_by errCauseBy,
 	    err_solution errSolution,create_time createTime,
-	    update_time updateTime,solve_time solveTime
+	    update_time updateTime,solve_time solveTime,category
 	FROM
 	    tt_err_collection
-	WHERE 1 = 1 
+	WHERE status = 1 
 		<if test="queryDto.errDescription != null and queryDto.errDescription != ''">
 	    	AND	err_description LIKE #{queryDto.errDescription}
 		</if>
@@ -30,6 +35,9 @@
 		</if>
 		<if test="queryDto.errSolution != null and queryDto.errSolution != ''">
 	    	AND err_solution LIKE #{queryDto.errSolution}
+		</if>
+		<if test="queryDto.category != null and queryDto.category != ''">
+	    	AND category = #{queryDto.category}
 		</if>
 	ORDER BY create_time DESC
   </select>

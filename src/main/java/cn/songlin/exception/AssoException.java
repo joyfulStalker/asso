@@ -9,4 +9,9 @@ public class AssoException extends BizException {
 	public static final BizException NOT_MOBLIEPHONE = new BizException(10010002, "手机号输入不正确");
 	public static final BizException NOT_EMAIL = new BizException(10010003, "邮箱输入不正确");
 	public static final BizException HIT_SENSITIVEWORD = new BizException(10010004, "请遵守社群规范");
+	
+	
+	//10021开头的为错误收集功能相关的
+	public static final BizException NO_ERR_DESCRIPTION = new BizException(10021001, "请填写错误描述");
+	public static final BizException NO_ERR_CATEGORY = new BizException(10021002, "请选择类别");
 }

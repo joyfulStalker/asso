@@ -27,15 +27,8 @@
 		<sqlMapGenerator targetPackage="${targetXMLPackage}"
 			targetProject="${targetResourcesProject}" />
 
-		<javaClientGenerator
-			targetPackage="${targetMapperPackage}"
-			targetProject="${targetJavaProject}" type="XMLMAPPER" />
 
 		<table tableName="tt_err_collection">
-			<generatedKey column="id" sqlStatement="Mysql"
-				identity="true" />
-		</table>
-		<table tableName="tt_err_refer">
 			<generatedKey column="id" sqlStatement="Mysql"
 				identity="true" />
 		</table>
