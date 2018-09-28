@@ -16,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 
 import cn.songlin.dto.base.ResponsePageResult;
 import cn.songlin.dto.errColl.ErrCollectionAddDto;
+import cn.songlin.dto.errColl.ErrCollectionDetailDto;
 import cn.songlin.dto.errColl.ErrCollectionDto;
 import cn.songlin.dto.errColl.ErrListQueryDto;
 import cn.songlin.dto.errColl.ErrReferDto;
@@ -35,25 +36,25 @@ public class ErrorCollectionService {
 
 	@Autowired
 	private TtErrCollectionMapper errMapper;
-	
+
 	@Autowired
 	private TtErrReferMapper referMapper;
 
 	public void saveOrUpdate(ErrCollectionAddDto dto) {
-		
-		TtErrCollection errColl = new TtErrCollection();
-		BeanUtils.copyProperties(dto, errColl);//复制数据
 
-		if(StringUtils.isEmpty(errColl.getErrDescription())) {
+		TtErrCollection errColl = new TtErrCollection();
+		BeanUtils.copyProperties(dto, errColl);// 复制数据
+
+		if (StringUtils.isEmpty(errColl.getErrDescription())) {
 			throw new AssoException().NO_ERR_DESCRIPTION;
 		}
-		if(StringUtils.isEmpty(errColl.getCategory())) {
+		if (StringUtils.isEmpty(errColl.getCategory())) {
 			throw new AssoException().NO_ERR_CATEGORY;
 		}
 		if (errColl.getErrSolution() != null) {
 			errColl.setSolveTime(new Date());
 		}
-		//执行错误收集插入
+		// 执行错误收集插入
 		if (errColl.getId() == null) {
 			errColl.setCreateTime(new Date());
 			errColl.setStatus((byte) 1);
@@ -62,20 +63,20 @@ public class ErrorCollectionService {
 			errColl.setUpdateTime(new Date());
 			errMapper.updateByPrimaryKeySelective(errColl);
 		}
-		//判断是否存在引用
+		// 判断是否存在引用
 		List<ErrReferDto> refers = dto.getRefers();
-		if(null != refers && refers.size() > 0) {
+		if (null != refers && refers.size() > 0) {
 			for (ErrReferDto errReferDto : refers) {
-				if(StringUtils.isEmpty(errReferDto.getSourceDesc())) {
+				if (StringUtils.isEmpty(errReferDto.getSourceDesc())) {
 					throw new AssoException().NO_REFER_SOURCEDESC;
 				}
 				TtErrRefer errRefer = new TtErrRefer();
 				BeanUtils.copyProperties(errReferDto, errRefer);
 				errRefer.setErrId(errColl.getId());
-				if(null == errRefer.getId()) {//执行插入
+				if (null == errRefer.getId()) {// 执行插入
 					errRefer.setCreateTime(new Date());
 					referMapper.insert(errRefer);
-				}else {//执行更新
+				} else {// 执行更新
 					errRefer.setUpdateTime(new Date());
 					referMapper.updateByPrimaryKeySelective(errRefer);
 				}
@@ -99,8 +100,20 @@ public class ErrorCollectionService {
 		return new ResponsePageResult(page.getList(), page.getTotal());
 	}
 
-	public TtErrCollection detail(Long errCollId) {
-		return errMapper.selectByPrimaryKey(errCollId);
+	public ErrCollectionDetailDto detail(Long errCollId) {
+		TtErrCollection errCollection = errMapper.selectByPrimaryKey(errCollId);
+		ErrCollectionDetailDto detailDto = null;
+		
+		if (null != errCollection) {
+			detailDto = new ErrCollectionDetailDto();
+			BeanUtils.copyProperties(errCollection, detailDto);
+			//查询参考数据
+			TtErrRefer refRecord = new TtErrRefer();
+			refRecord.setErrId(errCollId);
+			List<TtErrRefer> refers = referMapper.select(refRecord );
+			detailDto.setRefers(refers);
+		}
+		return detailDto;
 	}
 
 	public void errDel(long errCollId) {

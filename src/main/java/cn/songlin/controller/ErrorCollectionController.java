@@ -14,8 +14,8 @@ import cn.songlin.annotation.Monitor;
 import cn.songlin.dto.base.ResponseBeanResult;
 import cn.songlin.dto.base.ResponsePageResult;
 import cn.songlin.dto.errColl.ErrCollectionAddDto;
+import cn.songlin.dto.errColl.ErrCollectionDetailDto;
 import cn.songlin.dto.errColl.ErrListQueryDto;
-import cn.songlin.entity.TtErrCollection;
 import cn.songlin.service.ErrorCollectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,8 +59,8 @@ public class ErrorCollectionController {
 	@PostMapping("/detail")
 	@Monitor
 	@ApiOperation(value = "新增bug或更新bug")
-	public ResponseBeanResult<TtErrCollection> detail(@RequestParam long errCollId) {
-		TtErrCollection data = collService.detail(errCollId);
+	public ResponseBeanResult<ErrCollectionDetailDto> detail(@RequestParam long errCollId) {
+		ErrCollectionDetailDto data = collService.detail(errCollId);
 		return new ResponseBeanResult(data);
 	}
 }
