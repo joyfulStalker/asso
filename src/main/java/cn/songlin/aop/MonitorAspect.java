@@ -36,9 +36,9 @@ public class MonitorAspect {
 		Object[] args = pjp.getArgs();// 参数
 		for (Object parm : args) {
 
-			Class<? extends Object> class1 = parm.getClass();
+			//过滤request
 			if (!"org.apache.catalina.connector.RequestFacade".equals(parm.getClass().getName())) {
-				logger.info("请求参数--参数类型：" + parm.getClass().getName() + "--参数值：" + parm);
+				logger.info("请求参数" + parm);
 			}
 		}
 
@@ -48,10 +48,9 @@ public class MonitorAspect {
 		long end = System.currentTimeMillis();
 		long elapsedMilliseconds = end - start;
 		
-		if (result instanceof BaseResponseResult) {
-			((BaseResponseResult) result).setResultCode(BaseCode.SUCCESS);
-		}
 		if (result != null && result instanceof BaseResponseResult) {
+			((BaseResponseResult) result).setResultCode(BaseCode.SUCCESS);
+			((BaseResponseResult) result).setErrMsg("");
 			((BaseResponseResult) result).setElapsedMilliseconds(elapsedMilliseconds);
 		}
 		

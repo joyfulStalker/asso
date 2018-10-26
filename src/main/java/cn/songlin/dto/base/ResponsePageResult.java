@@ -11,16 +11,18 @@ public class ResponsePageResult extends BaseResponseResult {
 	private static final long serialVersionUID = -6086160088831903762L;
 
 	public ResponsePageResult(Object data, Long total) {
-		this.data = data;
 		this.total = total;
+		this.data = data;
 	}
+
 	public ResponsePageResult(String errMsg, Integer resultCode) {
 		this.resultCode = resultCode;
 		this.errMsg = errMsg;
 	}
-	private Object data;
 
 	private Long total;
+
+	private Object data;
 
 	public Object getData() {
 		return data;

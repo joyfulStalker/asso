@@ -1,6 +1,8 @@
 package cn.songlin.dto.errColl;
 
 import cn.songlin.dto.base.BaseQuery;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 错误列表查询参数
@@ -8,23 +10,28 @@ import cn.songlin.dto.base.BaseQuery;
  * @author liusonglin
  * @date 2018年9月21日
  */
-
+@ApiModel
 public class ErrListQueryDto extends BaseQuery {
+
 	/**
 	 * 错误描述
 	 */
+	@ApiModelProperty(value = "错误描述", example = "")
 	private String errDescription;
 
 	/**
 	 * 产生原因
 	 */
+	@ApiModelProperty(value = "产生原因", example = "")
 	private String errCauseBy;
 
 	/**
 	 * 解决方法
 	 */
+	@ApiModelProperty(value = "解决方法", example = "")
 	private String errSolution;
 
+	@ApiModelProperty(value = "分类", example = "java")
 	private String category;
 
 	public String getErrDescription() {
@@ -62,7 +69,7 @@ public class ErrListQueryDto extends BaseQuery {
 	@Override
 	public String toString() {
 		return "ErrListQueryDto [errDescription=" + errDescription + ", errCauseBy=" + errCauseBy + ", errSolution="
-				+ errSolution + ", category=" + category + "]";
+				+ errSolution + ", category=" + category + ", page=" + page + ", rows=" + rows + "]";
 	}
 
 }

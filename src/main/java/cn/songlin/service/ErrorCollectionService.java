@@ -86,6 +86,7 @@ public class ErrorCollectionService {
 
 	public ResponsePageResult errlist(ErrListQueryDto queryDto) {
 
+		//分页查询在执行查询之前会执行一下SELECT count(0) FROM table
 		PageHelper.startPage(queryDto.getPage(), queryDto.getRows());
 
 		// 处理模糊查询
