@@ -12,7 +12,7 @@ import cn.songlin.entity.UserAccount;
 import cn.songlin.exception.AssoException;
 import cn.songlin.mapper.UserAccountMapper;
 import cn.songlin.utils.MyStringUtils;
-import cn.songlin.utils.ValidateUtil;
+import cn.songlin.utils.ValidateUtils;
 
 @Service
 @SuppressWarnings(value = { "all" })
@@ -30,10 +30,10 @@ public class UserAccountService {
 	 */
 
 	public void register(UserAccountDto userAccountDto) {
-		if (!ValidateUtil.checkMobilephone(userAccountDto.getMobilePhone())) {// 不是手机号
+		if (!ValidateUtils.checkMobilephone(userAccountDto.getMobilePhone())) {// 不是手机号
 			throw new AssoException().NOT_MOBLIEPHONE;// 不是手机号
 		}
-		if (userAccountDto.getEmail() != null && !ValidateUtil.checkEmail(userAccountDto.getEmail())) {
+		if (userAccountDto.getEmail() != null && !ValidateUtils.checkEmail(userAccountDto.getEmail())) {
 			throw new AssoException().NOT_EMAIL;// 不是邮箱号
 		}
 		if (mapper.checkUserName(userAccountDto.getName()) > 0

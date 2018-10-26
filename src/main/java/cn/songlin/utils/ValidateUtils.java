@@ -1,5 +1,6 @@
 package cn.songlin.utils;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -9,7 +10,7 @@ import java.util.regex.Pattern;
  * @date 2018年7月31日
  */
 
-public class ValidateUtil {
+public class ValidateUtils {
 	/**
 	 * 验证手机号码
 	 * 
@@ -52,4 +53,18 @@ public class ValidateUtil {
 		return Pattern.matches(regex, email);
 	}
 
+	/**
+	 * 校验金额（精确到小数后两位）
+	 * 
+	 * @author liusonglin
+	 * @date 2018年10月26日
+	 * @param str
+	 * @return
+	 */
+
+	public static boolean checkAmount(String str) {
+		Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$"); // 判断小数点后2位的数字的正则表达式
+		Matcher match = pattern.matcher(str);
+		return match.matches();
+	}
 }
