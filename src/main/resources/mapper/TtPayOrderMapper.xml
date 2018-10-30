@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.songlin.mapper.TtPayOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.songlin.entity.TtPayOrder">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_code" jdbcType="VARCHAR" property="orderCode" />
+    <result column="order_type" jdbcType="VARCHAR" property="orderType" />
+  </resultMap>
+  
+  <select id="getAllCode" resultType="long">
+  	SELECT order_code code FROM community.tt_pay_order order by order_code
+  </select>
+</mapper>

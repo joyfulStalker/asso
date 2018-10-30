@@ -26,9 +26,11 @@
 
 		<sqlMapGenerator targetPackage="${targetXMLPackage}"
 			targetProject="${targetResourcesProject}" />
+		<javaClientGenerator
+			targetPackage="${targetMapperPackage}" type="XMLMAPPER"
+			targetProject="${targetJavaProject}"></javaClientGenerator>
 
-
-		<table tableName="tt_err_collection">
+		<table tableName="tt_pay_order">
 			<generatedKey column="id" sqlStatement="Mysql"
 				identity="true" />
 		</table>

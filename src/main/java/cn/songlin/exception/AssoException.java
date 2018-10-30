@@ -15,4 +15,7 @@ public class AssoException extends BizException {
 	public static final BizException NO_ERR_DESCRIPTION = new BizException(10021001, "请填写错误描述");
 	public static final BizException NO_ERR_CATEGORY = new BizException(10021002, "请选择类别");
 	public static final BizException NO_REFER_SOURCEDESC = new BizException(10021003, "请填写参考来源");
+	
+	//10022开头的为订单相关
+	public static final BizException ORDER_CREATE_FAILE = new BizException(10022001, "单号创建失败，请联系管理员");
 }
