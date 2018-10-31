@@ -19,7 +19,7 @@ public class ConvertObjToMapUtil {
 	*/
 		
 	public static Map<String, Object> getMap(Object obj) throws Exception {
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(16);
 		// 得到类对象
 		Class<? extends Object> clazz = (Class<? extends Object>) obj.getClass();
 		/* 得到类中的所有属性集合 */
