@@ -20,21 +20,28 @@ public class SignUtil {
 	 * 生成签名
 	 */
 	public static String generateSign(Map<String, String> parm) {
-		String _sign = "";
+		String json = "";
 		if (null != parm) {
 			Collection<String> keyset = parm.keySet();
 			List<String> list = new ArrayList<String>(keyset);
 			Collections.sort(list);
 			for (int i = 0; i < list.size(); i++) {
-				_sign += list.get(i) + "=" + parm.get(list.get(i));
+				json += list.get(i) + "=" + parm.get(list.get(i));
 			}
-			_sign = bytesToMD5((bytesToMD5(_sign.getBytes()) + "ffffffffffff20181010").getBytes());
+			json = bytesToMD5((bytesToMD5(json.getBytes()) + "ffffffffffff20181010").getBytes());
 		}
 
-		return _sign;
+		return json;
 	}
 
-	// 把字节数组转换成md5
+	/**
+	* 把字节数组转换成md5
+	* @author liusonglin
+	* @date 2018年10月31日
+	* @param input
+	* @return
+	*/
+		
 	public static String bytesToMD5(byte[] input) {
 		String md5str = null;
 		try {

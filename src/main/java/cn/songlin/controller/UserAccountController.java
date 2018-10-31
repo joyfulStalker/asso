@@ -60,7 +60,7 @@ public class UserAccountController {
 				ConstantUtil.SENSITIVEWORD_DEALER_CODE);
 		String name = sensitiveWordsService.useWords(userAccountDto.getName(), ConstantUtil.SENSITIVEWORD_DEALER_CODE);
 		if (!StringUtils.isEmpty(nickName) || !StringUtils.isEmpty(name)) {
-			throw new AssoException().HIT_SENSITIVEWORD;// 含有敏感词禁止写入，提示请遵守社群规范
+			throw AssoException.HIT_SENSITIVEWORD;// 含有敏感词禁止写入，提示请遵守社群规范
 		}
 		userAaccountService.register(userAccountDto);
 		return new ResponseBeanResult();

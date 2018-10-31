@@ -31,14 +31,14 @@ public class UserAccountService {
 
 	public void register(UserAccountDto userAccountDto) {
 		if (!ValidateUtils.checkMobilephone(userAccountDto.getMobilePhone())) {// 不是手机号
-			throw new AssoException().NOT_MOBLIEPHONE;// 不是手机号
+			throw AssoException.NOT_MOBLIEPHONE;// 不是手机号
 		}
 		if (userAccountDto.getEmail() != null && !ValidateUtils.checkEmail(userAccountDto.getEmail())) {
-			throw new AssoException().NOT_EMAIL;// 不是邮箱号
+			throw AssoException.NOT_EMAIL;// 不是邮箱号
 		}
 		if (mapper.checkUserName(userAccountDto.getName()) > 0
 				|| mapper.checkUserName(userAccountDto.getNickName()) > 0) {
-			throw new AssoException().NICK_EXIST;// 该昵称已存在
+			throw AssoException.NICK_EXIST;// 该昵称已存在
 		}
 		UserAccount record = new UserAccount();
 		BeanUtil.copyProperties(userAccountDto, record);

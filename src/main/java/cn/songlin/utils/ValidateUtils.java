@@ -63,7 +63,8 @@ public class ValidateUtils {
 	 */
 
 	public static boolean checkAmount(String str) {
-		Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$"); // 判断小数点后2位的数字的正则表达式
+		String reg = "^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$";
+		Pattern pattern = Pattern.compile(reg); // 判断小数点后2位的数字的正则表达式
 		Matcher match = pattern.matcher(str);
 		return match.matches();
 	}

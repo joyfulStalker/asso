@@ -46,10 +46,10 @@ public class ErrorCollectionService {
 		BeanUtils.copyProperties(dto, errColl);// 复制数据
 
 		if (StringUtils.isEmpty(errColl.getErrDescription())) {
-			throw new AssoException().NO_ERR_DESCRIPTION;
+			throw AssoException.NO_ERR_DESCRIPTION;
 		}
 		if (StringUtils.isEmpty(errColl.getCategory())) {
-			throw new AssoException().NO_ERR_CATEGORY;
+			throw AssoException.NO_ERR_CATEGORY;
 		}
 		if (errColl.getErrSolution() != null) {
 			errColl.setSolveTime(new Date());
@@ -68,7 +68,7 @@ public class ErrorCollectionService {
 		if (null != refers && refers.size() > 0) {
 			for (ErrReferDto errReferDto : refers) {
 				if (StringUtils.isEmpty(errReferDto.getSourceDesc())) {
-					throw new AssoException().NO_REFER_SOURCEDESC;
+					throw AssoException.NO_REFER_SOURCEDESC;
 				}
 				TtErrRefer errRefer = new TtErrRefer();
 				BeanUtils.copyProperties(errReferDto, errRefer);

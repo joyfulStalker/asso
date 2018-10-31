@@ -202,8 +202,8 @@ public class HttpToolkitUtils {
 
 	public static Object sendDataAndPost(String url, String param) {
 		try {
-			MediaType JSON = MediaType.parse("application/json; charset=utf-8");// 数据类型为json格式，
-			RequestBody body = RequestBody.create(JSON, param);
+			MediaType json = MediaType.parse("application/json; charset=utf-8");// 数据类型为json格式，
+			RequestBody body = RequestBody.create(json, param);
 
 			Request request = new Request.Builder().url(url).post(body).header("x-client-id", "PORTAL").build();
 			OkHttpClient client = getInstance();
@@ -223,8 +223,8 @@ public class HttpToolkitUtils {
 
 	public static Object sendDataAndPut(String url, String param) {
 		try {
-			MediaType JSON = MediaType.parse("application/json; charset=utf-8");// 数据类型为json格式，
-			RequestBody body = RequestBody.create(JSON, param);
+			MediaType json = MediaType.parse("application/json; charset=utf-8");// 数据类型为json格式，
+			RequestBody body = RequestBody.create(json, param);
 			logger.info("param:=" + param);
 			Request request = new Request.Builder().url(url).put(body).header("x-client-id", "APP")
 					.header("Content-Type", "application/json").build();

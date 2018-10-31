@@ -13,6 +13,15 @@ import cn.songlin.exception.BizException;
 @ControllerAdvice
 public class GlobalDefultExceptionHandler {
 
+	/**
+	 * @ResponseBody 不加该注解，返回给浏览器的值是默认的
+	 * @author liusonglin
+	 * @date 2018年10月31日
+	 * @param response
+	 * @param ex
+	 * @return
+	 */
+
 	@ExceptionHandler(BizException.class)
 	@ResponseBody // 不加该注解，返回给浏览器的值是默认的
 	public BaseResponseResult baseExceptionHandler(HttpServletResponse response, BizException ex) {

@@ -22,7 +22,7 @@ public class GenerateOrderCodeUtils {
 		int len = usedCodes.length;// 数组长度
 		// 首先判断长度是否超过90 = 99 + 1 -10
 		if (len >= endNum + 1 - beginNum) {// 数字已经用完
-			throw new AssoException().ORDER_CREATE_FAILE;
+			throw AssoException.ORDER_CREATE_FAILE;
 		}
 		// 判断数组最小值是否大于指定最小值
 		if (usedCodes[0] > beginNum) {
@@ -68,6 +68,6 @@ public class GenerateOrderCodeUtils {
 			}
 
 		}
-		throw new AssoException().ORDER_CREATE_FAILE;
+		throw AssoException.ORDER_CREATE_FAILE;
 	}
 }

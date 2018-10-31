@@ -15,6 +15,7 @@ import cn.songlin.interceptor.AuthenticationInterceptor;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
+	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**");
 	}
@@ -26,6 +27,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	 * @date 2018年5月22日
 	 * @param registry
 	 */
+	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**").allowedOrigins("*").allowCredentials(true).allowedMethods("*").maxAge(3600);
 	}

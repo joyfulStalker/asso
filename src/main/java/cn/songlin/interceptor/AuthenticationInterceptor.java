@@ -19,10 +19,30 @@ import cn.songlin.entity.UserAccount;
 import cn.songlin.entity.UserLog;
 import cn.songlin.utils.ClientIpUtils;
 
-// 自定义一个权限拦截器, 继承HandlerInterceptorAdapter类
+/**
+ * 自定义一个权限拦截器, 继承HandlerInterceptorAdapter类
+ * 
+ * @author liusonglin
+ * @date 2018年10月31日
+ */
+
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
-	// 在调用方法之前执行拦截
+	/**
+	 * 在调用方法之前执行拦截
+	 * 
+	 * @author liusonglin
+	 * @date 2018年10月31日
+	 * @param request
+	 * @param response
+	 * @param handler
+	 * @return
+	 * @throws Exception
+	 *             (non-Javadoc)
+	 * @see org.springframework.web.servlet.handler.HandlerInterceptorAdapter#preHandle(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, java.lang.Object)
+	 */
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
