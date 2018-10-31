@@ -15,9 +15,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.songlin.annotation.Access;
+import cn.songlin.common.utils.ClientIpUtils;
 import cn.songlin.entity.UserAccount;
 import cn.songlin.entity.UserLog;
-import cn.songlin.utils.ClientIpUtils;
 
 /**
  * 自定义一个权限拦截器, 继承HandlerInterceptorAdapter类

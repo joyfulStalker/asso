@@ -19,14 +19,14 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.songlin.dto.base.BaseCode;
-import cn.songlin.dto.base.ResponseBeanResult;
-import cn.songlin.dto.base.ResponsePageResult;
+import cn.songlin.common.dto.base.BaseCode;
+import cn.songlin.common.dto.base.ResponseBeanResult;
+import cn.songlin.common.dto.base.ResponsePageResult;
+import cn.songlin.common.exception.BizException;
+import cn.songlin.common.utils.ClientIpUtils;
+import cn.songlin.common.utils.UserLocal;
 import cn.songlin.entity.TtOnlinepayTrack;
-import cn.songlin.exception.BizException;
 import cn.songlin.mapper.TtOnlinepayTrackMapper;
-import cn.songlin.utils.ClientIpUtils;
-import cn.songlin.utils.UserLocal;
 
 /**
  * aop记录访问足迹

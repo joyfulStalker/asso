@@ -1,6 +1,6 @@
 package cn.songlin.dto.errColl;
 
-import cn.songlin.dto.base.BaseQuery;
+import cn.songlin.common.dto.base.BaseQuery;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

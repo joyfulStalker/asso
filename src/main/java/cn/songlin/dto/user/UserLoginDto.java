@@ -1,6 +1,6 @@
 package cn.songlin.dto.user;
 
-import cn.songlin.utils.MyStringUtils;
+import cn.songlin.common.utils.MyStringUtils;
 
 public class UserLoginDto {
 

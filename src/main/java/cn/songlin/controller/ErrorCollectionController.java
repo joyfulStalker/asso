@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.songlin.annotation.Monitor;
-import cn.songlin.dto.base.ResponseBeanResult;
-import cn.songlin.dto.base.ResponsePageResult;
+import cn.songlin.common.anno.Monitor;
+import cn.songlin.common.dto.base.ResponseBeanResult;
+import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.dto.errColl.ErrCollectionAddDto;
 import cn.songlin.dto.errColl.ErrCollectionDetailDto;
 import cn.songlin.dto.errColl.ErrListQueryDto;

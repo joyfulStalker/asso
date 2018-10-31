@@ -1,6 +1,6 @@
 package cn.songlin.utils;
 
-import cn.songlin.exception.AssoException;
+import cn.songlin.common.exception.AssoException;
 
 public class GenerateOrderCodeUtils {
 
@@ -54,17 +54,15 @@ public class GenerateOrderCodeUtils {
 					return usedCodes[i - 1] + 1;
 				}
 			}
-			//四位相邻的正整数异或后结果为零
-			if ((usedCodes[i] ^ usedCodes[i + 1] ^ usedCodes[i + 2] ^ usedCodes[i + 3]) != 0) {
-				if (usedCodes[i + 1] - usedCodes[i] > 1) {
-					return usedCodes[i] + 1;
-				}
-				if (usedCodes[i + 2] - usedCodes[i + 1] > 1) {
-					return usedCodes[i + 1] + 1;
-				}
-				if (usedCodes[i + 3] - usedCodes[i + 2] > 1) {
-					return usedCodes[i + 2] + 1;
-				}
+			// 四位相邻的正整数异或后结果为零
+			if (usedCodes[i + 1] - usedCodes[i] > 1) {
+				return usedCodes[i] + 1;
+			}
+			if (usedCodes[i + 2] - usedCodes[i + 1] > 1) {
+				return usedCodes[i + 1] + 1;
+			}
+			if (usedCodes[i + 3] - usedCodes[i + 2] > 1) {
+				return usedCodes[i + 2] + 1;
 			}
 
 		}

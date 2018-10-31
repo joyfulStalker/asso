@@ -34,7 +34,7 @@ public class PayOrderService {
 		int i = orderMapper.selectCount(order);
 		if (i > 0) {
 			long[] usedCodes = orderMapper.getAllCode();
-			return GenerateOrderCodeUtils.getUniqueCode(usedCodes, 10, 99) + "";
+			return GenerateOrderCodeUtils.getUniqueCode(usedCodes, 100000, 999999) + "";
 		}
 		return code;
 	}
@@ -42,6 +42,10 @@ public class PayOrderService {
 	public String getCode() {
 		StringBuilder sb = new StringBuilder(2);
 		sb.append(new Random().nextInt(9) + 1);
+		sb.append(new Random().nextInt(10));
+		sb.append(new Random().nextInt(10));
+		sb.append(new Random().nextInt(10));
+		sb.append(new Random().nextInt(10));
 		sb.append(new Random().nextInt(10));
 		return sb.toString();
 	}

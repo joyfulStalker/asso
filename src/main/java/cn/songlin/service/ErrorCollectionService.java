@@ -14,7 +14,9 @@ import org.springframework.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import cn.songlin.dto.base.ResponsePageResult;
+import cn.songlin.common.dto.base.ResponsePageResult;
+import cn.songlin.common.exception.AssoException;
+import cn.songlin.common.utils.MyStringUtils;
 import cn.songlin.dto.errColl.ErrCollectionAddDto;
 import cn.songlin.dto.errColl.ErrCollectionDetailDto;
 import cn.songlin.dto.errColl.ErrCollectionDto;
@@ -22,10 +24,8 @@ import cn.songlin.dto.errColl.ErrListQueryDto;
 import cn.songlin.dto.errColl.ErrReferDto;
 import cn.songlin.entity.TtErrCollection;
 import cn.songlin.entity.TtErrRefer;
-import cn.songlin.exception.AssoException;
 import cn.songlin.mapper.TtErrCollectionMapper;
 import cn.songlin.mapper.TtErrReferMapper;
-import cn.songlin.utils.MyStringUtils;
 
 @Service
 @Transactional
