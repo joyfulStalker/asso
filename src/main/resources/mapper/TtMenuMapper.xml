@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.songlin.mapper.TtMenuMapper">
+  <resultMap id="BaseResultMap" type="cn.songlin.entity.TtMenu">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pid" jdbcType="BIGINT" property="pid" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="component" jdbcType="VARCHAR" property="component" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="menu_show" jdbcType="TINYINT" property="menuShow" />
+    <result column="icon_cls" jdbcType="VARCHAR" property="iconCls" />
+    <result column="delete_flag" jdbcType="INTEGER" property="deleteFlag" />
+    <result column="leaf" jdbcType="TINYINT" property="leaf" />
+  </resultMap>
+</mapper>

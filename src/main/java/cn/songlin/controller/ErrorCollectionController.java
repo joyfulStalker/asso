@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("errCollection")
 @Api("错误收集")
 @ResponseBody
-@SuppressWarnings(value = { "all" })
 public class ErrorCollectionController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ErrorCollectionController.class);
@@ -37,9 +36,9 @@ public class ErrorCollectionController {
 	@ApiOperation(value = "删除")
 	public ResponseBeanResult<Void> errDel(@RequestParam long errCollId) {
 		collService.errDel(errCollId);
-		return new ResponseBeanResult();
+		return new ResponseBeanResult<>();
 	}
-	
+
 	@PostMapping("/errList")
 	@Monitor
 	@ApiOperation(value = "错误列表")
@@ -51,16 +50,16 @@ public class ErrorCollectionController {
 	@PostMapping("/saveOrUpdate")
 	@Monitor
 	@ApiOperation(value = "新增bug或更新bug")
-	public ResponseBeanResult saveOrUpdate(@RequestBody ErrCollectionAddDto dto) {
+	public ResponseBeanResult<Void> saveOrUpdate(@RequestBody ErrCollectionAddDto dto) {
 		collService.saveOrUpdate(dto);
-		return new ResponseBeanResult();
+		return new ResponseBeanResult<>();
 	}
-	
+
 	@PostMapping("/detail")
 	@Monitor
-	@ApiOperation(value = "新增bug或更新bug")
-	public ResponseBeanResult<ErrCollectionDetailDto> detail(@RequestParam long errCollId) {
+	@ApiOperation(value = "bug详情")
+	public ResponseBeanResult<ErrCollectionDetailDto> detail(@RequestParam("errCollId") long errCollId) {
 		ErrCollectionDetailDto data = collService.detail(errCollId);
-		return new ResponseBeanResult(data);
+		return new ResponseBeanResult<>(data);
 	}
 }
