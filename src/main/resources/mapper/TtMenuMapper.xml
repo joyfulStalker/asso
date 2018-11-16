@@ -14,5 +14,9 @@
     <result column="icon_cls" jdbcType="VARCHAR" property="iconCls" />
     <result column="delete_flag" jdbcType="INTEGER" property="deleteFlag" />
     <result column="leaf" jdbcType="TINYINT" property="leaf" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
 </mapper>
