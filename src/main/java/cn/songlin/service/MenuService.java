@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.dto.menu.MenuAddDto;
@@ -125,6 +126,8 @@ public class MenuService {
 	}
 
 	public void manageMenu(MenuAddDto addDto) {
+		// 数据校验
+		checkMenuData(addDto);
 		TtMenu record = new TtMenu();
 		if (!"/".equals(addDto.getPath())) {
 			record.setPath(addDto.getPath());
@@ -151,6 +154,18 @@ public class MenuService {
 				throw AssoException.PLE_CONF_MENU;
 			}
 			menuMapper.updateByPrimaryKeySelective(record);
+		}
+	}
+
+	private void checkMenuData(MenuAddDto addDto) {
+		if (StringUtils.isEmpty(addDto.getPath())) {
+			throw AssoException.NO_PATH;
+		}
+		if (StringUtils.isEmpty(addDto.getName())) {
+			throw AssoException.NO_NAME;
+		}
+		if (StringUtils.isEmpty(addDto.getComponent())) {
+			throw AssoException.NO_COMPONENT;
 		}
 	}
 
