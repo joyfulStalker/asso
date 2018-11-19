@@ -5,10 +5,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +18,7 @@ import cn.songlin.common.anno.Monitor;
 import cn.songlin.common.dto.base.ResponseBeanResult;
 import cn.songlin.dto.menu.MenuAddDto;
 import cn.songlin.dto.menu.MenuConfListDto;
+import cn.songlin.dto.menu.MenuDetailDto;
 import cn.songlin.dto.menu.MenuListDto;
 import cn.songlin.service.MenuService;
 import io.swagger.annotations.Api;
@@ -32,9 +35,25 @@ public class MenuController {
 	@Autowired
 	private MenuService menuService;
 	
+	@GetMapping("/menuDetail")
+	@Monitor
+	@ApiOperation(value = "菜单配置详情")
+	public ResponseBeanResult<MenuDetailDto> menuDetail(@RequestParam("id") long id) {
+		MenuDetailDto detailDto = menuService.menuDetail(id);
+		return new ResponseBeanResult<>(detailDto);
+	}
+	
+	@DeleteMapping("/remMenu")
+	@Monitor
+	@ApiOperation(value = "菜单配置删除")
+	public ResponseBeanResult<Void> remMenu(@RequestParam("id") long id) {
+		menuService.remMenu(id);
+		return new ResponseBeanResult<>();
+	}
+	
 	@PostMapping("/manageMenu")
 	@Monitor
-	@ApiOperation(value = "菜单添加或更新配置")
+	@ApiOperation(value = "菜单配置添加或更新配置")
 	public ResponseBeanResult<Void> manageMenu(@RequestBody MenuAddDto addDto) {
 		menuService.manageMenu(addDto);
 		return new ResponseBeanResult<>();

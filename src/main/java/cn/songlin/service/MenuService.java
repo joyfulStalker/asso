@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.dto.menu.MenuAddDto;
 import cn.songlin.dto.menu.MenuConfListDto;
+import cn.songlin.dto.menu.MenuDetailDto;
 import cn.songlin.dto.menu.MenuListDto;
 import cn.songlin.entity.TtMenu;
 import cn.songlin.mapper.TtMenuMapper;
@@ -147,6 +148,7 @@ public class MenuService {
 					throw AssoException.PLE_CONF_MENU;
 				}
 			}
+
 			menuMapper.insertSelective(record);
 		} else {
 			TtMenu pMenu = menuMapper.selectByPrimaryKey(addDto.getId());
@@ -167,6 +169,25 @@ public class MenuService {
 		if (StringUtils.isEmpty(addDto.getComponent())) {
 			throw AssoException.NO_COMPONENT;
 		}
+	}
+
+	public void remMenu(Long id) {
+		TtMenu record = menuMapper.selectByPrimaryKey(id);
+		if (null == record || 2 == record.getDeleteFlag().intValue()) {
+			throw AssoException.PLE_CONF_MENU;
+		}
+		// 是否有子节点
+
+		record.setDeleteFlag(2);// 删除
+		menuMapper.updateByPrimaryKey(record);
+
+	}
+
+	public MenuDetailDto menuDetail(long id) {
+		TtMenu ttMenu = menuMapper.selectByPrimaryKey(id);
+		MenuDetailDto detailDto = new MenuDetailDto();
+		BeanUtils.copyProperties(ttMenu, detailDto);
+		return detailDto;
 	}
 
 }
