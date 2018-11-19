@@ -2,6 +2,7 @@ package cn.songlin.mapper;
 
 import org.apache.ibatis.annotations.Param;
 
+import cn.songlin.common.dto.LocalUser;
 import cn.songlin.dto.user.UserLoginDto;
 import cn.songlin.entity.UserAccount;
 import tk.mybatis.mapper.common.BaseMapper;
@@ -26,5 +27,5 @@ public interface UserAccountMapper extends BaseMapper<UserAccount> {
 	* @return
 	*/
 		
-	UserAccount login(@Param("userLoginDto")UserLoginDto userLoginDto);
+	LocalUser login(@Param("userLoginDto")UserLoginDto userLoginDto);
 }

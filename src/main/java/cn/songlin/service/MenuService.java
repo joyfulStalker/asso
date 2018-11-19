@@ -1,6 +1,7 @@
 package cn.songlin.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import cn.songlin.common.exception.AssoException;
+import cn.songlin.common.utils.UserLocal;
 import cn.songlin.dto.menu.MenuAddDto;
 import cn.songlin.dto.menu.MenuConfListDto;
 import cn.songlin.dto.menu.MenuDetailDto;
@@ -130,15 +132,14 @@ public class MenuService {
 		// 数据校验
 		checkMenuData(addDto);
 		TtMenu record = new TtMenu();
+		List<TtMenu> list = null;
+		String userId = UserLocal.getLocalUser().getUserId();
 		if (!"/".equals(addDto.getPath())) {
 			record.setPath(addDto.getPath());
-			List<TtMenu> list = menuMapper.select(record);
-			if (null != list && list.size() > 0) {
-				throw AssoException.DUPLICATE_PATH;
-			}
+			record.setDeleteFlag(1);//可用状态
+			list = menuMapper.select(record);
 		}
 		BeanUtils.copyProperties(addDto, record);
-		// 判断路径是否有重复数据
 		if (null == addDto.getId() || 0 == addDto.getId().intValue()) {
 			// 判断父节点是否为根节点 pid = 0
 			if (0 != addDto.getPid().intValue()) {// 不是根节点
@@ -148,13 +149,25 @@ public class MenuService {
 					throw AssoException.PLE_CONF_MENU;
 				}
 			}
-
+			// 判断路径是否有重复数据
+			if (null != list && list.size() > 0) {
+				throw AssoException.DUPLICATE_PATH;
+			}
+			record.setCreateBy(userId);
 			menuMapper.insertSelective(record);
 		} else {
 			TtMenu pMenu = menuMapper.selectByPrimaryKey(addDto.getId());
 			if (null == pMenu || 2 == pMenu.getDeleteFlag()) {
 				throw AssoException.PLE_CONF_MENU;
 			}
+			// 判断路径是否有重复数据
+			for (TtMenu ttMenu : list) {
+				if (ttMenu.getId().intValue() != addDto.getId()) {
+					throw AssoException.DUPLICATE_PATH;
+				}
+			}
+			record.setUpdateBy(userId);
+			record.setUpdateDate(new Date());
 			menuMapper.updateByPrimaryKeySelective(record);
 		}
 	}
@@ -168,6 +181,9 @@ public class MenuService {
 		}
 		if (StringUtils.isEmpty(addDto.getComponent())) {
 			throw AssoException.NO_COMPONENT;
+		}
+		if (null == UserLocal.getLocalUser().getUserId()) {
+			throw AssoException.PLE_LOGIN;
 		}
 	}
 

@@ -15,8 +15,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.songlin.annotation.Access;
+import cn.songlin.common.dto.LocalUser;
 import cn.songlin.common.utils.ClientIpUtils;
-import cn.songlin.entity.UserAccount;
 import cn.songlin.entity.UserLog;
 
 /**
@@ -51,13 +51,12 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}
 
-		UserAccount userAccount = (UserAccount) request.getSession().getAttribute("sessionId");
+		LocalUser userAccount = (LocalUser) request.getSession().getAttribute("sessionId");
 
 		BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
 		// UserLogMapper userLogMapper = (UserLogMapper)
 		// factory.getBean("userLogMapper");
 		AmqpTemplate template = (AmqpTemplate) factory.getBean("rabbitTemplate");
-		;
 		// 访问足迹记录
 		UserLog userLog = new UserLog();
 		userLog.setLogDataTime(new Date());

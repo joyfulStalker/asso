@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.songlin.comm.ConstantUtil;
 import cn.songlin.common.anno.Monitor;
+import cn.songlin.common.dto.LocalUser;
 import cn.songlin.common.dto.base.ResponseBeanResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
 import cn.songlin.dto.user.UserAccountDto;
 import cn.songlin.dto.user.UserLoginDto;
-import cn.songlin.entity.UserAccount;
 import cn.songlin.service.SensitiveWordsService;
 import cn.songlin.service.UserAccountService;
 import io.swagger.annotations.Api;
@@ -70,11 +70,11 @@ public class UserAccountController {
 	@ApiOperation(value = "用户登录")
 	@Monitor
 	public ResponseBeanResult<String> login(@RequestBody UserLoginDto userLoginDto) {
-		UserAccount userAccount = userAaccountService.login(userLoginDto);
+		LocalUser userAccount = userAaccountService.login(userLoginDto);
 		if (userAccount != null) {// 登陆成功
 			// 写入缓存
 			HttpSession session = request.getSession();
-			session.setMaxInactiveInterval(120);// 设置30s
+			session.setMaxInactiveInterval(3600);// 设置30s
 			session.setAttribute("sessionId", userAccount);
 			return new ResponseBeanResult<String>("1");
 		}

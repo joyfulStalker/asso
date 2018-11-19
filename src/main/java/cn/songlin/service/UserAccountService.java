@@ -2,10 +2,12 @@ package cn.songlin.service;
 
 import java.util.Date;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.songlin.common.dto.LocalUser;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
 import cn.songlin.common.utils.ValidateUtils;
@@ -50,12 +52,14 @@ public class UserAccountService {
 		mapper.insertSelective(record);
 	}
 
-	public UserAccount login(UserLoginDto userLoginDto) {
-		UserAccount userAccount = mapper.login(userLoginDto);// 支持昵称，用户名，电话登录
+	public LocalUser login(UserLoginDto userLoginDto) {
+		LocalUser userAccount = mapper.login(userLoginDto);// 支持昵称，用户名，电话登录
 		if (userAccount != null) {// 登陆成功
-			userAccount.setPassword(null);
-			userAccount.setLastLoginDate(new Date());// 刷新最后登录时间
-			mapper.updateByPrimaryKeySelective(userAccount);
+			UserAccount account = new UserAccount();
+			BeanUtils.copyProperties(userAccount, account);
+			account.setPassword(null);
+			account.setLastLoginDate(new Date());// 刷新最后登录时间
+			mapper.updateByPrimaryKeySelective(account);
 		}
 		return userAccount;
 	}

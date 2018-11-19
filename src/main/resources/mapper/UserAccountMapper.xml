@@ -31,7 +31,12 @@
   	SELECT count(1) FROM user_account where name = #{name} or nick_name = #{name};
   </select>
   
-  <select id="login" resultMap="BaseResultMap">
-  	SELECT * FROM user_account where password = #{userLoginDto.password} and (name = #{userLoginDto.userName} or nick_name = #{userLoginDto.userName} or mobile_phone = #{userLoginDto.userName});
+  <select id="login" resultType="cn.songlin.common.dto.LocalUser">
+  	SELECT id,user_id userId,name,mobile_Phone mobilePhone,password,
+  			photo_Url photoUrl,nick_Name nickName,create_Date createDate,
+  			update_Date updateDate,user_Type userType,email,qq
+  	FROM user_account where 
+  		password = #{userLoginDto.password} 
+  		and (name = #{userLoginDto.userName} or nick_name = #{userLoginDto.userName} or mobile_phone = #{userLoginDto.userName});
   </select>
 </mapper>
