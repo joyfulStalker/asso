@@ -1,15 +1,11 @@
 package cn.songlin.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "user_account")
-public class UserAccount implements Serializable{
-    
-	private static final long serialVersionUID = -8868821553907742920L;
-
-	/**
+public class UserAccount {
+    /**
      * 主键id
      */
     @Id
@@ -70,39 +66,14 @@ public class UserAccount implements Serializable{
     private Date lastLoginDate;
 
     /**
-     * 用户粉丝数
+     * 性别
      */
-    private Long fans;
+    private Boolean sex;
 
     /**
-     * 勋章数
+     * 地址
      */
-    @Column(name = "medal_count")
-    private Integer medalCount;
-
-    /**
-     * 昵称修改次数
-     */
-    @Column(name = "nick_change_times")
-    private Integer nickChangeTimes;
-
-    /**
-     * 上次昵称修改时间
-     */
-    @Column(name = "last_nickchange_time")
-    private Date lastNickchangeTime;
-
-    /**
-     * 禁言时长（单位：小时，-1：永久禁言）
-     */
-    @Column(name = "bansend_timelength")
-    private Long bansendTimelength;
-
-    /**
-     * 禁言开始时间
-     */
-    @Column(name = "bansend_starttime")
-    private Date bansendStarttime;
+    private String address;
 
     /**
      * 获取主键id
@@ -329,111 +300,39 @@ public class UserAccount implements Serializable{
     }
 
     /**
-     * 获取用户粉丝数
+     * 获取性别
      *
-     * @return fans - 用户粉丝数
+     * @return sex - 性别
      */
-    public Long getFans() {
-        return fans;
+    public Boolean getSex() {
+        return sex;
     }
 
     /**
-     * 设置用户粉丝数
+     * 设置性别
      *
-     * @param fans 用户粉丝数
+     * @param sex 性别
      */
-    public void setFans(Long fans) {
-        this.fans = fans;
+    public void setSex(Boolean sex) {
+        this.sex = sex;
     }
 
     /**
-     * 获取勋章数
+     * 获取地址
      *
-     * @return medal_count - 勋章数
+     * @return address - 地址
      */
-    public Integer getMedalCount() {
-        return medalCount;
+    public String getAddress() {
+        return address;
     }
 
     /**
-     * 设置勋章数
+     * 设置地址
      *
-     * @param medalCount 勋章数
+     * @param address 地址
      */
-    public void setMedalCount(Integer medalCount) {
-        this.medalCount = medalCount;
-    }
-
-    /**
-     * 获取昵称修改次数
-     *
-     * @return nick_change_times - 昵称修改次数
-     */
-    public Integer getNickChangeTimes() {
-        return nickChangeTimes;
-    }
-
-    /**
-     * 设置昵称修改次数
-     *
-     * @param nickChangeTimes 昵称修改次数
-     */
-    public void setNickChangeTimes(Integer nickChangeTimes) {
-        this.nickChangeTimes = nickChangeTimes;
-    }
-
-    /**
-     * 获取上次昵称修改时间
-     *
-     * @return last_nickchange_time - 上次昵称修改时间
-     */
-    public Date getLastNickchangeTime() {
-        return lastNickchangeTime;
-    }
-
-    /**
-     * 设置上次昵称修改时间
-     *
-     * @param lastNickchangeTime 上次昵称修改时间
-     */
-    public void setLastNickchangeTime(Date lastNickchangeTime) {
-        this.lastNickchangeTime = lastNickchangeTime;
-    }
-
-    /**
-     * 获取禁言时长（单位：小时，-1：永久禁言）
-     *
-     * @return bansend_timelength - 禁言时长（单位：小时，-1：永久禁言）
-     */
-    public Long getBansendTimelength() {
-        return bansendTimelength;
-    }
-
-    /**
-     * 设置禁言时长（单位：小时，-1：永久禁言）
-     *
-     * @param bansendTimelength 禁言时长（单位：小时，-1：永久禁言）
-     */
-    public void setBansendTimelength(Long bansendTimelength) {
-        this.bansendTimelength = bansendTimelength;
-    }
-
-    /**
-     * 获取禁言开始时间
-     *
-     * @return bansend_starttime - 禁言开始时间
-     */
-    public Date getBansendStarttime() {
-        return bansendStarttime;
-    }
-
-    /**
-     * 设置禁言开始时间
-     *
-     * @param bansendStarttime 禁言开始时间
-     */
-    public void setBansendStarttime(Date bansendStarttime) {
-        this.bansendStarttime = bansendStarttime;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 	@Override
@@ -441,10 +340,8 @@ public class UserAccount implements Serializable{
 		return "UserAccount [id=" + id + ", userId=" + userId + ", name=" + name + ", mobilePhone=" + mobilePhone
 				+ ", password=" + password + ", photoUrl=" + photoUrl + ", nickName=" + nickName + ", createDate="
 				+ createDate + ", updateDate=" + updateDate + ", userType=" + userType + ", email=" + email + ", qq="
-				+ qq + ", registerDate=" + registerDate + ", lastLoginDate=" + lastLoginDate + ", fans=" + fans
-				+ ", medalCount=" + medalCount + ", nickChangeTimes=" + nickChangeTimes + ", lastNickchangeTime="
-				+ lastNickchangeTime + ", bansendTimelength=" + bansendTimelength + ", bansendStarttime="
-				+ bansendStarttime + "]";
+				+ qq + ", registerDate=" + registerDate + ", lastLoginDate=" + lastLoginDate + ", sex=" + sex
+				+ ", address=" + address + "]";
 	}
     
 }

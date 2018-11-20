@@ -30,7 +30,7 @@
 			targetPackage="${targetMapperPackage}" type="XMLMAPPER"
 			targetProject="${targetJavaProject}"></javaClientGenerator>
 
-		<table tableName="tt_menu">
+		<table tableName="user_account">
 			<generatedKey column="id" sqlStatement="Mysql"
 				identity="true" />
 		</table>

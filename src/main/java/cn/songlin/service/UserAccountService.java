@@ -21,6 +21,7 @@ import cn.songlin.common.utils.ValidateUtils;
 import cn.songlin.dto.user.UserAccountDto;
 import cn.songlin.dto.user.UserListDto;
 import cn.songlin.dto.user.UserLoginDto;
+import cn.songlin.dto.user.UserQueryDto;
 import cn.songlin.entity.UserAccount;
 import cn.songlin.mapper.UserAccountMapper;
 
@@ -72,9 +73,10 @@ public class UserAccountService {
 		return userAccount;
 	}
 
-	public ResponsePageResult userList(BaseQuery baseQuery) {
-		PageHelper.offsetPage(baseQuery.getPage(), baseQuery.getRows());
-		List<UserAccount> list = mapper.selectAll();
+	public ResponsePageResult userList(UserQueryDto queryDto) {
+		PageHelper.startPage(queryDto.getPage(), queryDto.getRows());
+		List<UserAccount> list = mapper.queryList(MyStringUtils.dealLikeStr(queryDto.getSearchKey()));
+//		List<UserAccount> list = mapper.selectAll();
 		List<UserListDto> res = new ArrayList<>();// 存放返回信息
 		for (UserAccount userAccount : list) {
 			UserListDto listDto = new UserListDto();
