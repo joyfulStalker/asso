@@ -160,10 +160,12 @@ public class MenuService {
 			if (null == pMenu || 2 == pMenu.getDeleteFlag()) {
 				throw AssoException.PLE_CONF_MENU;
 			}
-			// 判断路径是否有重复数据
-			for (TtMenu ttMenu : list) {
-				if (ttMenu.getId().intValue() != addDto.getId()) {
-					throw AssoException.DUPLICATE_PATH;
+			if(null != list) {
+				// 判断路径是否有重复数据
+				for (TtMenu ttMenu : list) {
+					if (ttMenu.getId().intValue() != addDto.getId()) {
+						throw AssoException.DUPLICATE_PATH;
+					}
 				}
 			}
 			record.setUpdateBy(userId);
