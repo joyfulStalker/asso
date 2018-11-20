@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.songlin.comm.ConstantUtil;
 import cn.songlin.common.anno.Monitor;
 import cn.songlin.common.dto.LocalUser;
+import cn.songlin.common.dto.base.BaseQuery;
 import cn.songlin.common.dto.base.ResponseBeanResult;
+import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
 import cn.songlin.dto.user.UserAccountDto;
 import cn.songlin.dto.user.UserLoginDto;
+import cn.songlin.dto.user.UserQueryDto;
 import cn.songlin.service.SensitiveWordsService;
 import cn.songlin.service.UserAccountService;
 import io.swagger.annotations.Api;
@@ -50,11 +54,18 @@ public class UserAccountController {
 	@Autowired
 	private Environment env;
 
+	@GetMapping("userList")
+	@ApiOperation(value = "用户列表")
+	@Monitor
+	public ResponsePageResult userList(UserQueryDto queryDto) {
+		return userAaccountService.userList(queryDto);
+	}
+
 	@PostMapping("register")
 	@Monitor
 	// @TrackLog // 记录用户支付足迹
 	@ApiOperation(value = "用户注册")
-	public ResponseBeanResult register(@RequestBody UserAccountDto userAccountDto) {
+	public ResponseBeanResult register(UserAccountDto userAccountDto) {
 		// 过滤敏感词 含有敏感词禁止写入
 		String nickName = sensitiveWordsService.useWords(userAccountDto.getNickName(),
 				ConstantUtil.SENSITIVEWORD_DEALER_CODE);

@@ -1,17 +1,25 @@
 package cn.songlin.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import cn.hutool.core.bean.BeanUtil;
 import cn.songlin.common.dto.LocalUser;
+import cn.songlin.common.dto.base.BaseQuery;
+import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
 import cn.songlin.common.utils.ValidateUtils;
 import cn.songlin.dto.user.UserAccountDto;
+import cn.songlin.dto.user.UserListDto;
 import cn.songlin.dto.user.UserLoginDto;
 import cn.songlin.entity.UserAccount;
 import cn.songlin.mapper.UserAccountMapper;
@@ -62,6 +70,20 @@ public class UserAccountService {
 			mapper.updateByPrimaryKeySelective(account);
 		}
 		return userAccount;
+	}
+
+	public ResponsePageResult userList(BaseQuery baseQuery) {
+		PageHelper.offsetPage(baseQuery.getPage(), baseQuery.getRows());
+		List<UserAccount> list = mapper.selectAll();
+		List<UserListDto> res = new ArrayList<>();// 存放返回信息
+		for (UserAccount userAccount : list) {
+			UserListDto listDto = new UserListDto();
+			BeanUtils.copyProperties(userAccount, listDto);
+			listDto.setPassword(null);
+			res.add(listDto);
+		}
+		PageInfo<UserAccount> page = new PageInfo<>(list);
+		return new ResponsePageResult(res, page.getTotal());
 	}
 
 }
