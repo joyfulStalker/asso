@@ -27,6 +27,7 @@ import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
 import cn.songlin.dto.user.UserAccountDto;
+import cn.songlin.dto.user.UserChangePwdDto;
 import cn.songlin.dto.user.UserLoginDto;
 import cn.songlin.dto.user.UserQueryDto;
 import cn.songlin.service.SensitiveWordsService;
@@ -53,6 +54,14 @@ public class UserAccountController {
 
 	@Autowired
 	private Environment env;
+	
+	@PostMapping("changePwd")
+	@ApiOperation(value = "更改密码")
+	@Monitor
+	public ResponseBeanResult changePwd(@RequestBody UserChangePwdDto pwdDto) {
+		userAaccountService.changePwd(pwdDto);
+		return new ResponseBeanResult();
+	}
 
 	@GetMapping("userList")
 	@ApiOperation(value = "用户列表")

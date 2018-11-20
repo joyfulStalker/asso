@@ -13,12 +13,13 @@ import com.github.pagehelper.PageInfo;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.songlin.common.dto.LocalUser;
-import cn.songlin.common.dto.base.BaseQuery;
 import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
+import cn.songlin.common.utils.UserLocal;
 import cn.songlin.common.utils.ValidateUtils;
 import cn.songlin.dto.user.UserAccountDto;
+import cn.songlin.dto.user.UserChangePwdDto;
 import cn.songlin.dto.user.UserListDto;
 import cn.songlin.dto.user.UserLoginDto;
 import cn.songlin.dto.user.UserQueryDto;
@@ -76,7 +77,6 @@ public class UserAccountService {
 	public ResponsePageResult userList(UserQueryDto queryDto) {
 		PageHelper.startPage(queryDto.getPage(), queryDto.getRows());
 		List<UserAccount> list = mapper.queryList(MyStringUtils.dealLikeStr(queryDto.getSearchKey()));
-//		List<UserAccount> list = mapper.selectAll();
 		List<UserListDto> res = new ArrayList<>();// 存放返回信息
 		for (UserAccount userAccount : list) {
 			UserListDto listDto = new UserListDto();
@@ -86,6 +86,20 @@ public class UserAccountService {
 		}
 		PageInfo<UserAccount> page = new PageInfo<>(list);
 		return new ResponsePageResult(res, page.getTotal());
+	}
+
+	public void changePwd(UserChangePwdDto pwdDto) {
+		String userId = UserLocal.getLocalUser().getUserId();
+		if (null == userId) {
+			throw AssoException.PLE_LOGIN;
+		}
+		UserAccount account = mapper.selectByPrimaryKey(UserLocal.getLocalUser().getId());
+		if (!account.getPassword().equals(pwdDto.getOldPassword())) {
+			throw AssoException.ERR_OLD_PWD;
+		}
+		account.setPassword(pwdDto.getNewPassword());// 更新密码
+		account.setUpdateDate(new Date());
+		mapper.updateByPrimaryKeySelective(account);
 	}
 
 }
