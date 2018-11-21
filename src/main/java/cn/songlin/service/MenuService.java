@@ -56,7 +56,7 @@ public class MenuService {
 			menuDto.setMenuShow(menu.getMenuShow().intValue() == 1 ? true : false);
 			menuDto.setLeaf(menu.getLeaf().intValue() == 1 ? true : false);
 			// 判断当前节点的父节点
-			if (menu.getPid().longValue() == 0l) {// 一级节点
+			if (menu.getPid().longValue() == 0L) {// 一级节点
 				menuList.add(menuDto);
 			} else {
 				// 遍历menuList，找寻其应该在的节点
@@ -92,7 +92,7 @@ public class MenuService {
 		List<MenuConfListDto> menuConfListDtos = new ArrayList<>();
 		// 根节点
 		MenuConfListDto e = new MenuConfListDto();
-		e.setId(0l);
+		e.setId(0L);
 		e.setLabel("菜单配置");
 		menuConfListDtos.add(e);
 		getSortMenuConf(list, e.getChildren());
@@ -105,7 +105,7 @@ public class MenuService {
 			menuDto.setId(menu.getId());
 			menuDto.setLabel(menu.getName());
 			// 判断当前节点的父节点
-			if (menu.getPid().longValue() == 0l) {// 一级节点
+			if (menu.getPid().longValue() == 0L) {// 一级节点
 				menuConfListDtos.add(menuDto);
 			} else {
 				// 遍历menuList，找寻其应该在的节点
