@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.songlin.comm.ConstantUtil;
 import cn.songlin.common.dto.LocalUser;
+import cn.songlin.common.dto.base.ResponseBeanResult;
 import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
+import cn.songlin.common.utils.SessionUtils;
 import cn.songlin.common.utils.UserLocal;
 import cn.songlin.common.utils.ValidateUtils;
 import cn.songlin.dto.user.UserAccountDto;
@@ -64,13 +69,15 @@ public class UserAccountService {
 
 	public LocalUser login(UserLoginDto userLoginDto) {
 		LocalUser userAccount = mapper.login(userLoginDto);// 支持昵称，用户名，电话登录
-		if (userAccount != null) {// 登陆成功
-			UserAccount account = new UserAccount();
-			BeanUtils.copyProperties(userAccount, account);
-			account.setPassword(null);
-			account.setLastLoginDate(new Date());// 刷新最后登录时间
-			mapper.updateByPrimaryKeySelective(account);
+		if (null == userAccount) {
+			throw AssoException.FAILED_LOGIN;
 		}
+		// 登陆成功
+		UserAccount account = new UserAccount();
+		BeanUtils.copyProperties(userAccount, account);
+		account.setPassword(null);
+		account.setLastLoginDate(new Date());// 刷新最后登录时间
+		mapper.updateByPrimaryKeySelective(account);
 		return userAccount;
 	}
 
@@ -89,10 +96,7 @@ public class UserAccountService {
 	}
 
 	public void changePwd(UserChangePwdDto pwdDto) {
-		String userId = UserLocal.getLocalUser().getUserId();
-		if (null == userId) {
-			throw AssoException.PLE_LOGIN;
-		}
+		checkLogin();
 		UserAccount account = mapper.selectByPrimaryKey(UserLocal.getLocalUser().getId());
 		if (!account.getPassword().equals(pwdDto.getOldPassword())) {
 			throw AssoException.ERR_OLD_PWD;
@@ -102,4 +106,68 @@ public class UserAccountService {
 		mapper.updateByPrimaryKeySelective(account);
 	}
 
+	public ResponseBeanResult userDetail() {
+		LocalUser localUser = UserLocal.getLocalUser();
+		UserAccountDto dto = new UserAccountDto();
+		BeanUtils.copyProperties(localUser, dto);
+		return new ResponseBeanResult(dto);
+	}
+
+	public void changeProfile(UserAccountDto accountDto) {
+		checkLogin();
+		if (!UserLocal.getLocalUser().getId().equals(accountDto.getId())) {
+			throw AssoException.NOTALLOWED_CHANGE;
+		}
+		UserAccount account = new UserAccount();
+		accountDto.setMobilePhone(null);
+		accountDto.setPassword(null);
+		accountDto.setQq(null);
+		BeanUtils.copyProperties(accountDto, account);
+		account.setUpdateDate(new Date());
+		mapper.updateByPrimaryKeySelective(account);
+	}
+
+	/**
+	 * 校验用户是否登陆
+	 * 
+	 * @author liusonglin
+	 * @date 2018年11月21日
+	 */
+
+	private void checkLogin() {
+		String userId = UserLocal.getLocalUser().getUserId();
+		if (null == userId) {
+			throw AssoException.PLE_LOGIN;
+		}
+	}
+
+	/**
+	 * 更新redis的用户信息
+	 * 
+	 * @author liusonglin
+	 * @date 2018年11月21日
+	 * @param request
+	 */
+
+	public void updateRedisUserInfo(HttpServletRequest request) {
+		String userId = UserLocal.getLocalUser().getUserId();
+		if (null == userId) {
+			throw AssoException.PLE_LOGIN;
+		}
+		LocalUser localUser = mapper.redisUserInfo(UserLocal.getLocalUser().getId());
+		SessionUtils.writeSession(request, ConstantUtil.REDIS_USER_SESSIONID, localUser,
+				ConstantUtil.REDIS_SESSIONID_LIVE_TIME);
+	}
+
+	/**
+	 * 清除redis的用户信息
+	 * 
+	 * @author liusonglin
+	 * @date 2018年11月21日
+	 * @param request
+	 */
+
+	public void clearRedisUserInfo(HttpServletRequest request) {
+		SessionUtils.clearBySessionId(request, ConstantUtil.REDIS_USER_SESSIONID);
+	}
 }

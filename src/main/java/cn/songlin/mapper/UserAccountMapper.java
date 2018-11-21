@@ -41,4 +41,15 @@ public interface UserAccountMapper extends BaseMapper<UserAccount> {
 	* @return
 	*/
 	List<UserAccount> queryList(@Param("searchKey") String searchKey);
+	
+	
+	/**
+	* 用于redis缓存用户信息
+	* @author liusonglin
+	* @date 2018年11月21日
+	* @param id
+	* @return
+	*/
+		
+	LocalUser redisUserInfo(@Param("id") Long id);
 }

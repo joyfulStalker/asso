@@ -19,12 +19,19 @@
     <result column="qq" jdbcType="VARCHAR" property="qq" />
     <result column="register_date" jdbcType="TIMESTAMP" property="registerDate" />
     <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate" />
-    <result column="sex" jdbcType="BIT" property="sex" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
     <result column="address" jdbcType="VARCHAR" property="address" />
   </resultMap>
   
   <select id="checkUserName" resultType="int">
   	SELECT count(1) FROM user_account where name = #{name} or nick_name = #{name};
+  </select>
+  
+  <select id="redisUserInfo" resultType="cn.songlin.common.dto.LocalUser">
+  	SELECT id,user_id userId,name,mobile_Phone mobilePhone,
+  			photo_Url photoUrl,nick_Name nickName,create_Date createDate,
+  			update_Date updateDate,user_Type userType,email,qq
+  	FROM user_account where id  = #{id}
   </select>
   
   <select id="login" resultType="cn.songlin.common.dto.LocalUser">

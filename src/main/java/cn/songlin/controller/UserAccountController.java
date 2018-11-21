@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.songlin.comm.ConstantUtil;
 import cn.songlin.common.anno.Monitor;
 import cn.songlin.common.dto.LocalUser;
-import cn.songlin.common.dto.base.BaseQuery;
 import cn.songlin.common.dto.base.ResponseBeanResult;
 import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
+import cn.songlin.common.utils.SessionUtils;
 import cn.songlin.dto.user.UserAccountDto;
 import cn.songlin.dto.user.UserChangePwdDto;
 import cn.songlin.dto.user.UserLoginDto;
@@ -54,7 +53,22 @@ public class UserAccountController {
 
 	@Autowired
 	private Environment env;
-	
+
+	@GetMapping("userDetail")
+	@ApiOperation(value = "用户列表")
+	@Monitor
+	public ResponseBeanResult userDetail() {
+		return userAaccountService.userDetail();
+	}
+
+	@PostMapping("changeProfile")
+	@ApiOperation(value = "更改个人信息")
+	@Monitor
+	public ResponseBeanResult changeProfile(@RequestBody UserAccountDto accountDto) {
+		userAaccountService.changeProfile(accountDto);
+		return new ResponseBeanResult();
+	}
+
 	@PostMapping("changePwd")
 	@ApiOperation(value = "更改密码")
 	@Monitor
@@ -89,16 +103,11 @@ public class UserAccountController {
 	@PostMapping("login")
 	@ApiOperation(value = "用户登录")
 	@Monitor
-	public ResponseBeanResult<String> login(@RequestBody UserLoginDto userLoginDto) {
+	public ResponseBeanResult login(@RequestBody UserLoginDto userLoginDto) {
 		LocalUser userAccount = userAaccountService.login(userLoginDto);
-		if (userAccount != null) {// 登陆成功
-			// 写入缓存
-			HttpSession session = request.getSession();
-			session.setMaxInactiveInterval(3600);// 设置30s
-			session.setAttribute("sessionId", userAccount);
-			return new ResponseBeanResult<String>("1");
-		}
-		return new ResponseBeanResult<String>("0");
+		// 写入缓存
+		SessionUtils.writeSession(request, ConstantUtil.REDIS_USER_SESSIONID, userAccount, 3600);
+		return new ResponseBeanResult(userAccount);
 	}
 
 	@PostMapping("testProp")

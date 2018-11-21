@@ -53,9 +53,9 @@ public class UserListDto {
 	private Date lastLoginDate;
 
 	/**
-	 * 性别
+	 * 性别(1: 男 2 女)
 	 */
-	private Boolean sex;
+	private Integer sex;
 
 	/**
 	 * 地址
@@ -298,7 +298,7 @@ public class UserListDto {
 	 *
 	 * @return sex - 性别
 	 */
-	public Boolean getSex() {
+	public Integer getSex() {
 		return sex;
 	}
 
@@ -308,7 +308,7 @@ public class UserListDto {
 	 * @param sex
 	 *            性别
 	 */
-	public void setSex(Boolean sex) {
+	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
 

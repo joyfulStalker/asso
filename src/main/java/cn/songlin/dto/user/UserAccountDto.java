@@ -2,6 +2,8 @@ package cn.songlin.dto.user;
 
 public class UserAccountDto {
 
+	private Long id;
+
 	private String name;
 
 	private String mobilePhone;
@@ -62,9 +64,17 @@ public class UserAccountDto {
 		this.qq = qq;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
-		return "UserAccountDto [name=" + name + ", mobilePhone=" + mobilePhone + ", password=" + password
+		return "UserAccountDto [id=" + id + ", name=" + name + ", mobilePhone=" + mobilePhone + ", password=" + password
 				+ ", nickName=" + nickName + ", email=" + email + ", qq=" + qq + "]";
 	}
 
