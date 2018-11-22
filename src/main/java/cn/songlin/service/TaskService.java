@@ -1,5 +1,6 @@
 package cn.songlin.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import cn.songlin.quartz.QuartzManager;
 import cn.songlin.quartz.TaskDO;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class TaskService {
 
 	@Autowired
@@ -44,23 +45,28 @@ public class TaskService {
 	public ResponsePageResult taskList(TaskQueryDto queryDto) {
 		PageHelper.startPage(queryDto.getPage(), queryDto.getRows());
 		List<TtTask> list = taskMapper.selectAll();
+		List<TtTaskDto> res = new ArrayList<>();
+		for (TtTask ttTask : list) {
+			TtTaskDto dto = new TtTaskDto();
+			BeanUtils.copyProperties(ttTask, dto);
+			res.add(dto);
+		}
 		PageInfo<TtTask> info = new PageInfo<>(list);
-		return new ResponsePageResult(list, info.getTotal());
+		return new ResponsePageResult(res, info.getTotal());
 	}
 
 	public void taskManage(TtTaskDto taskDto) throws Exception {
 		// 判断新增还是修改
 		if (null == taskDto.getId()) {// 新增
 			// 判断是否立即执行
+			TtTask task = new TtTask();
+			BeanUtils.copyProperties(taskDto, task);
+			task.setBeanClass("cn.songlin.quartz.ExecuteJob");
+			task.setCreateTime(new Date());
+			task.setCreateBy(UserLocal.getLocalUser().getUserId());
+			taskMapper.insertSelective(task);
+			// 添加任务
 			if (JobStatusEnum.RUNNING.getVal().equals(taskDto.getJobStatus())) {
-				TtTask task = new TtTask();
-				BeanUtils.copyProperties(taskDto, task);
-				task.setBeanClass("cn.songlin.quartz.ExecuteJob");
-				task.setCreateTime(new Date());
-				task.setCreateBy(UserLocal.getLocalUser().getUserId());
-				taskMapper.insertSelective(task);
-
-				// 执行任务
 				TaskDO taskDo = new TaskDO();
 				BeanUtils.copyProperties(task, taskDo);
 				quartzManager.addJob(taskDo);

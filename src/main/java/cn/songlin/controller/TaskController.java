@@ -34,7 +34,7 @@ public class TaskController {
 		return new ResponseBeanResult<>();
 	}
 
-	@GetMapping("/taskList")
+	@PostMapping("/taskList")
 	@Monitor
 	@ApiOperation(value = "定时任务列表")
 	public ResponsePageResult taskList(@RequestBody TaskQueryDto queryDto) {
@@ -45,7 +45,15 @@ public class TaskController {
 	@Monitor
 	@ApiOperation(value = "测试任务调度")
 	public ResponseBeanResult<Void> test() {
-		System.out.println("调用了" + System.currentTimeMillis());
+		System.out.println("调用了1" + System.currentTimeMillis());
+		return new ResponseBeanResult<>();
+	}
+
+	@GetMapping("/test2")
+	@Monitor
+	@ApiOperation(value = "测试任务调度")
+	public ResponseBeanResult<Void> test2() {
+		System.out.println("调用了2" + System.currentTimeMillis());
 		return new ResponseBeanResult<>();
 	}
 }

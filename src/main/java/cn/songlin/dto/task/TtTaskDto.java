@@ -2,6 +2,10 @@ package cn.songlin.dto.task;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class TtTaskDto {
 
 	private Long id;
@@ -49,6 +53,8 @@ public class TtTaskDto {
 	/**
 	 * 创建时间
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
 	private Date createTime;
 
 	/**
