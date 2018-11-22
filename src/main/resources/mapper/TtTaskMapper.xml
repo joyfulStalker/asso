@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.songlin.mapper.TtTaskMapper">
+  <resultMap id="BaseResultMap" type="cn.songlin.entity.TtTask">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression" />
+    <result column="bean_class" jdbcType="VARCHAR" property="beanClass" />
+    <result column="job_status" jdbcType="VARCHAR" property="jobStatus" />
+    <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
+    <result column="invoked_url" jdbcType="VARCHAR" property="invokedUrl" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>
