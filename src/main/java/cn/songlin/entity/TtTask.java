@@ -51,6 +51,12 @@ public class TtTask {
     private String invokedUrl;
 
     /**
+     * 1:是 0:否
+     */
+    @Column(name = "is_delete")
+    private Boolean isDelete;
+
+    /**
      * 创建者
      */
     @Column(name = "create_by")
@@ -212,6 +218,24 @@ public class TtTask {
      */
     public void setInvokedUrl(String invokedUrl) {
         this.invokedUrl = invokedUrl;
+    }
+
+    /**
+     * 获取1:是 0:否
+     *
+     * @return is_delete - 1:是 0:否
+     */
+    public Boolean getIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     * 设置1:是 0:否
+     *
+     * @param isDelete 1:是 0:否
+     */
+    public void setIsDelete(Boolean isDelete) {
+        this.isDelete = isDelete;
     }
 
     /**

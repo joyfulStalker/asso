@@ -35,7 +35,7 @@ public class TaskService {
 	public void initSchedule() {
 		List<TtTask> list = taskMapper.select(null);
 		for (TtTask ttTask : list) {
-			if (JobStatusEnum.RUNNING.getVal().equals(ttTask.getJobStatus())) {
+			if (!ttTask.getIsDelete() && JobStatusEnum.RUNNING.getVal().equals(ttTask.getJobStatus())) {
 				TaskDO taskDO = new TaskDO();
 				BeanUtils.copyProperties(ttTask, taskDO);
 				quartzManager.addJob(taskDO);
@@ -48,9 +48,11 @@ public class TaskService {
 		List<TtTask> list = taskMapper.selectAll();
 		List<TtTaskDto> res = new ArrayList<>();
 		for (TtTask ttTask : list) {
-			TtTaskDto dto = new TtTaskDto();
-			BeanUtils.copyProperties(ttTask, dto);
-			res.add(dto);
+			if (!ttTask.getIsDelete()) {
+				TtTaskDto dto = new TtTaskDto();
+				BeanUtils.copyProperties(ttTask, dto);
+				res.add(dto);
+			}
 		}
 		PageInfo<TtTask> info = new PageInfo<>(list);
 		return new ResponsePageResult(res, info.getTotal());
@@ -65,6 +67,7 @@ public class TaskService {
 			task.setBeanClass("cn.songlin.quartz.ExecuteJob");
 			task.setCreateTime(new Date());
 			task.setCreateBy(UserLocal.getLocalUser().getUserId());
+			task.setJobStatus(taskDto.getJobStatus());
 			taskMapper.insertSelective(task);
 			// 添加任务
 			if (JobStatusEnum.RUNNING.getVal().equals(taskDto.getJobStatus())) {
@@ -74,7 +77,7 @@ public class TaskService {
 			}
 		} else {
 			TtTask task = taskMapper.selectByPrimaryKey(taskDto.getId());
-			if (null == task) {
+			if (null == task || task.getIsDelete()) {
 				throw AssoException.NO_SUCH_TASK;
 			}
 			if (!JobStatusEnum.STOP.getVal().equals(task.getJobStatus())) {
@@ -96,7 +99,7 @@ public class TaskService {
 
 	public void changeStatus(TtTaskDto taskDto) throws Exception {
 		TtTask task = taskMapper.selectByPrimaryKey(taskDto.getId());
-		if (null == task) {
+		if (null == task || task.getIsDelete()) {
 			return;
 		}
 		TaskDO taskDo = new TaskDO();
@@ -126,6 +129,20 @@ public class TaskService {
 			BeanUtils.copyProperties(task, taskDto);
 		}
 		return taskDto;
+	}
+
+	public void delete(Long id) {
+		TtTask task = taskMapper.selectByPrimaryKey(id);
+		if (null == task || task.getIsDelete()) {
+			throw AssoException.NO_SUCH_TASK;
+		}
+		if (!JobStatusEnum.STOP.getVal().equals(task.getJobStatus())) {
+			throw AssoException.PLE_STOP_FIRST;
+		}
+		task.setIsDelete(true);
+		task.setUpdateBy(UserLocal.getLocalUser().getUserId());
+		task.setUpdateTime(new Date());
+		taskMapper.updateByPrimaryKeySelective(task);
 	}
 
 }

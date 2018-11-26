@@ -13,6 +13,7 @@
     <result column="job_status" jdbcType="VARCHAR" property="jobStatus" />
     <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
     <result column="invoked_url" jdbcType="VARCHAR" property="invokedUrl" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />

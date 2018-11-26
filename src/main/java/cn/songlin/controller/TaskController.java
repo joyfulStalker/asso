@@ -57,6 +57,14 @@ public class TaskController {
 	public ResponsePageResult taskList(@RequestBody TaskQueryDto queryDto) {
 		return taskService.taskList(queryDto);
 	}
+	
+	@GetMapping("/delete")
+	@Monitor
+	@ApiOperation(value = "定时任务--详情")
+	public ResponseBeanResult<Void> delete(@RequestParam Long id) throws Exception {
+		taskService.delete(id);
+		return new ResponseBeanResult<>();
+	}
 
 	@GetMapping("/test")
 	@Monitor
