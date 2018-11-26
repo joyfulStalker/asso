@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,22 @@ public class TaskController {
 	public ResponseBeanResult<Void> taskManage(@RequestBody TtTaskDto taskDto) throws Exception {
 		taskService.taskManage(taskDto);
 		return new ResponseBeanResult<>();
+	}
+
+	@PostMapping("/changeStatus")
+	@Monitor
+	@ApiOperation(value = "定时任务--启动 停止")
+	public ResponseBeanResult<Void> changeStatus(@RequestBody TtTaskDto taskDto) throws Exception {
+		taskService.changeStatus(taskDto);
+		return new ResponseBeanResult<>();
+	}
+
+	@GetMapping("/detail")
+	@Monitor
+	@ApiOperation(value = "定时任务--详情")
+	public ResponseBeanResult<TtTaskDto> detail(@RequestParam Long id) throws Exception {
+		TtTaskDto taskDto = taskService.detail(id);
+		return new ResponseBeanResult<>(taskDto);
 	}
 
 	@PostMapping("/taskList")

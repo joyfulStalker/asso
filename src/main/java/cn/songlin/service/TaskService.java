@@ -13,6 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import cn.songlin.common.dto.base.ResponsePageResult;
+import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.UserLocal;
 import cn.songlin.dto.task.TaskQueryDto;
 import cn.songlin.dto.task.TtTaskDto;
@@ -72,9 +73,59 @@ public class TaskService {
 				quartzManager.addJob(taskDo);
 			}
 		} else {
-
+			TtTask task = taskMapper.selectByPrimaryKey(taskDto.getId());
+			if (null == task) {
+				throw AssoException.NO_SUCH_TASK;
+			}
+			if (!JobStatusEnum.STOP.getVal().equals(task.getJobStatus())) {
+				throw AssoException.PLE_STOP_FIRST;
+			}
+			BeanUtils.copyProperties(taskDto, task);
+			// 添加任务
+			if (JobStatusEnum.RUNNING.getVal().equals(taskDto.getJobStatus())) {
+				TaskDO taskDo = new TaskDO();
+				BeanUtils.copyProperties(task, taskDo);
+				quartzManager.addJob(taskDo);
+			}
+			task.setUpdateBy(UserLocal.getLocalUser().getUserId());
+			task.setUpdateTime(new Date());
+			taskMapper.updateByPrimaryKey(task);
 		}
 
+	}
+
+	public void changeStatus(TtTaskDto taskDto) throws Exception {
+		TtTask task = taskMapper.selectByPrimaryKey(taskDto.getId());
+		if (null == task) {
+			return;
+		}
+		TaskDO taskDo = new TaskDO();
+		BeanUtils.copyProperties(task, taskDo);
+		// 判断状态
+		if (taskDto.getJobStatus().equals(taskDo.getJobStatus())) {
+			// 状态前后一致不做处理
+			return;
+		}
+		if (JobStatusEnum.RUNNING.getVal().equals(taskDto.getJobStatus())) {
+			taskDo.setJobStatus(JobStatusEnum.RUNNING.getVal());
+			task.setJobStatus(JobStatusEnum.RUNNING.getVal());
+			quartzManager.addJob(taskDo);
+		} else if (JobStatusEnum.STOP.getVal().equals(taskDto.getJobStatus())) {
+			quartzManager.deleteJob(taskDo);
+			task.setJobStatus(JobStatusEnum.STOP.getVal());
+		}
+		task.setUpdateBy(UserLocal.getLocalUser().getUserId());
+		task.setUpdateTime(new Date());
+		taskMapper.updateByPrimaryKeySelective(task);
+	}
+
+	public TtTaskDto detail(Long id) {
+		TtTask task = taskMapper.selectByPrimaryKey(id);
+		TtTaskDto taskDto = new TtTaskDto();
+		if (null != task) {
+			BeanUtils.copyProperties(task, taskDto);
+		}
+		return taskDto;
 	}
 
 }
