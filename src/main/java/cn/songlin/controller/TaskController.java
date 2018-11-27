@@ -70,7 +70,7 @@ public class TaskController {
 	@Monitor
 	@ApiOperation(value = "测试任务调度")
 	public ResponseBeanResult<Void> test() {
-		System.out.println("调用了1" + System.currentTimeMillis());
+		System.out.println("调用了1");
 		return new ResponseBeanResult<>();
 	}
 
@@ -78,7 +78,7 @@ public class TaskController {
 	@Monitor
 	@ApiOperation(value = "测试任务调度")
 	public ResponseBeanResult<Void> test2() {
-		System.out.println("调用了2" + System.currentTimeMillis());
+		System.out.println("调用了2");
 		return new ResponseBeanResult<>();
 	}
 }

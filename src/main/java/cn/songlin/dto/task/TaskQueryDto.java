@@ -187,7 +187,7 @@ public class TaskQueryDto extends BaseQuery {
 	public String toString() {
 		return "TaskQueryDto [jobName=" + jobName + ", description=" + description + ", jobStatus=" + jobStatus
 				+ ", jobGroup=" + jobGroup + ", invokedUrl=" + invokedUrl + ", createBy=" + createBy + ", createTime="
-				+ createTime + "]";
+				+ createTime + ", page=" + page + ", rows=" + rows + "]";
 	}
 
 }
