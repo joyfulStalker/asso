@@ -19,4 +19,25 @@
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+  
+  <select id="selectUsedTask" resultMap="BaseResultMap">
+    SELECT 
+	    *
+	FROM
+	    community.tt_task
+	WHERE
+        is_delete = 0 
+        <if test="queryDto.jobStatus != null and queryDto.jobStatus != '' ">
+        	AND job_status = #{queryDto.jobStatus}
+        </if>
+        <if test="queryDto.jobName != null">
+	        AND job_name LIKE #{queryDto.jobName}
+        </if>
+        <if test="queryDto.description != null">
+        	AND description LIKE #{queryDto.description}
+        </if>
+        <if test="queryDto.jobGroup != null">
+        	AND job_group LIKE #{queryDto.jobGroup}
+        </if>
+  </select>
 </mapper>

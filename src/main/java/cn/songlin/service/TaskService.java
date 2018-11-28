@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 
 import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
+import cn.songlin.common.utils.MyStringUtils;
 import cn.songlin.common.utils.UserLocal;
 import cn.songlin.dto.task.TaskQueryDto;
 import cn.songlin.dto.task.TtTaskDto;
@@ -44,8 +45,10 @@ public class TaskService {
 	}
 
 	public ResponsePageResult taskList(TaskQueryDto queryDto) {
+		// 处理模糊查询的字段
+		dealLikeStr(queryDto);
 		PageHelper.startPage(queryDto.getPage(), queryDto.getRows());
-		List<TtTask> list = taskMapper.selectAll();
+		List<TtTask> list = taskMapper.selectUsedTask(queryDto);
 		List<TtTaskDto> res = new ArrayList<>();
 		for (TtTask ttTask : list) {
 			if (!ttTask.getIsDelete()) {
@@ -56,6 +59,12 @@ public class TaskService {
 		}
 		PageInfo<TtTask> info = new PageInfo<>(list);
 		return new ResponsePageResult(res, info.getTotal());
+	}
+
+	private void dealLikeStr(TaskQueryDto queryDto) {
+		queryDto.setDescription(MyStringUtils.dealLikeStr(queryDto.getDescription()));
+		queryDto.setJobGroup(MyStringUtils.dealLikeStr(queryDto.getJobGroup()));
+		queryDto.setJobName(MyStringUtils.dealLikeStr(queryDto.getJobName()));
 	}
 
 	public void taskManage(TtTaskDto taskDto) throws Exception {
