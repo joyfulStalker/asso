@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("pay")
-@Api("订单")
+@Api("用于测试")
 @ResponseBody
 @SuppressWarnings(value = { "all" })
 public class PayOrderController {
