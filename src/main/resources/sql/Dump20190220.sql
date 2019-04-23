@@ -96,7 +96,7 @@ CREATE TABLE `scheduled_conf` (
   `conf_cron` varchar(50) NOT NULL COMMENT '定时执行表达式',
   `scheduled_url` varchar(300) NOT NULL COMMENT '要定时执行的url',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='定时任务配置表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='定时任务配置表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -458,7 +458,7 @@ CREATE TABLE `user_account` (
   `address` varchar(45) DEFAULT NULL COMMENT '地址',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=123509 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=123509 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
