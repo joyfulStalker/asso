@@ -29,6 +29,7 @@ spring:
   redis:
     host: ${rd.asso.host}
     port: ${rd.asso.port}
+    password: ${rd.asso.password}
 mybatis:
   configuration:
     auto-mapping-behavior: full
