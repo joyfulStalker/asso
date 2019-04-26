@@ -17,14 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.songlin.comm.ConstantUtil;
 import cn.songlin.common.anno.Monitor;
-import cn.songlin.common.dto.LocalUser;
+import cn.songlin.common.constant.ConstantUtil;
 import cn.songlin.common.dto.base.ResponseBeanResult;
 import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
-import cn.songlin.common.utils.SessionUtils;
 import cn.songlin.dto.user.UserAccountDto;
 import cn.songlin.dto.user.UserChangePwdDto;
 import cn.songlin.dto.user.UserLoginDto;
@@ -104,10 +102,7 @@ public class UserAccountController {
 	@ApiOperation(value = "用户登录")
 	@Monitor
 	public ResponseBeanResult login(@RequestBody UserLoginDto userLoginDto) {
-		LocalUser userAccount = userAaccountService.login(userLoginDto);
-		// 写入缓存
-		SessionUtils.writeSession(request, ConstantUtil.REDIS_USER_SESSIONID, userAccount, 3600);
-		return new ResponseBeanResult(userAccount);
+		return new ResponseBeanResult(userAaccountService.login(userLoginDto));
 	}
 
 	@PostMapping("testProp")
@@ -141,5 +136,15 @@ public class UserAccountController {
 		n = MyStringUtils.dealSensitivePhone(null, phone);
 		map.put("为空", n);
 		return new ResponseBeanResult<>(map);
+	}
+
+	@PostMapping("logout")
+	@ApiOperation(value = "用户退出登录")
+	@Monitor
+	public ResponseBeanResult logout(@RequestBody UserLoginDto userLoginDto) {
+//		LocalUser userAccount = userAaccountService.login(userLoginDto);
+//		// 写入缓存
+//		SessionUtils.writeSession(request, ConstantUtil.REDIS_USER_SESSIONID, userAccount, 3600);
+		return new ResponseBeanResult("");
 	}
 }

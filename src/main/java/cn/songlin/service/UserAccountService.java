@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +17,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.songlin.comm.ConstantUtil;
+import cn.songlin.common.constant.ConstantUtil;
 import cn.songlin.common.dto.LocalUser;
 import cn.songlin.common.dto.base.ResponseBeanResult;
 import cn.songlin.common.dto.base.ResponsePageResult;
 import cn.songlin.common.exception.AssoException;
 import cn.songlin.common.utils.MyStringUtils;
-import cn.songlin.common.utils.SessionUtils;
+import cn.songlin.common.utils.RedisUtil;
 import cn.songlin.common.utils.UserLocal;
 import cn.songlin.common.utils.ValidateUtils;
 import cn.songlin.dto.user.UserAccountDto;
@@ -35,8 +38,20 @@ import cn.songlin.mapper.UserAccountMapper;
 @SuppressWarnings(value = { "all" })
 public class UserAccountService {
 
+	private static final Logger logger = LoggerFactory.getLogger(UserAccountService.class);
+
 	@Autowired
 	private UserAccountMapper mapper;
+
+	@Autowired
+	private HttpServletRequest request;
+	@Autowired
+	private HttpServletResponse response;
+	@Autowired
+	private RedisUtil redisUtil;
+
+	@Autowired
+	private UserLocal userLocal;
 
 	/**
 	 * 用户注册
@@ -72,12 +87,18 @@ public class UserAccountService {
 		if (null == userAccount) {
 			throw AssoException.FAILED_LOGIN;
 		}
+		userAccount.setPassword(null);
 		// 登陆成功
 		UserAccount account = new UserAccount();
 		BeanUtils.copyProperties(userAccount, account);
-		account.setPassword(null);
 		account.setLastLoginDate(new Date());// 刷新最后登录时间
 		mapper.updateByPrimaryKeySelective(account);
+		// 生成唯一token，作为key，用户信息作为值，写到redis缓存中
+		String token = MyStringUtils.getUUID();
+		logger.info("token值:" + token);
+		redisUtil.hset(ConstantUtil.REDIS_USER_SESSIONID, token, userAccount);
+		// 把token传给前端
+		userAccount.setToken(token);
 		return userAccount;
 	}
 
@@ -97,7 +118,7 @@ public class UserAccountService {
 
 	public void changePwd(UserChangePwdDto pwdDto) {
 		checkLogin();
-		UserAccount account = mapper.selectByPrimaryKey(UserLocal.getLocalUser().getId());
+		UserAccount account = mapper.selectByPrimaryKey(userLocal.getLocalUser().getId());
 		if (!account.getPassword().equals(pwdDto.getOldPassword())) {
 			throw AssoException.ERR_OLD_PWD;
 		}
@@ -107,7 +128,7 @@ public class UserAccountService {
 	}
 
 	public ResponseBeanResult userDetail() {
-		LocalUser localUser = UserLocal.getLocalUser();
+		LocalUser localUser = userLocal.getLocalUser();
 		UserAccountDto dto = new UserAccountDto();
 		BeanUtils.copyProperties(localUser, dto);
 		return new ResponseBeanResult(dto);
@@ -115,7 +136,7 @@ public class UserAccountService {
 
 	public void changeProfile(UserAccountDto accountDto) {
 		checkLogin();
-		if (!UserLocal.getLocalUser().getId().equals(accountDto.getId())) {
+		if (!userLocal.getLocalUser().getId().equals(accountDto.getId())) {
 			throw AssoException.NOTALLOWED_CHANGE;
 		}
 		UserAccount account = new UserAccount();
@@ -135,39 +156,10 @@ public class UserAccountService {
 	 */
 
 	private void checkLogin() {
-		String userId = UserLocal.getLocalUser().getUserId();
+		String userId = userLocal.getLocalUser().getUserId();
 		if (null == userId) {
 			throw AssoException.PLE_LOGIN;
 		}
 	}
 
-	/**
-	 * 更新redis的用户信息
-	 * 
-	 * @author liusonglin
-	 * @date 2018年11月21日
-	 * @param request
-	 */
-
-	public void updateRedisUserInfo(HttpServletRequest request) {
-		String userId = UserLocal.getLocalUser().getUserId();
-		if (null == userId) {
-			throw AssoException.PLE_LOGIN;
-		}
-		LocalUser localUser = mapper.redisUserInfo(UserLocal.getLocalUser().getId());
-		SessionUtils.writeSession(request, ConstantUtil.REDIS_USER_SESSIONID, localUser,
-				ConstantUtil.REDIS_SESSIONID_LIVE_TIME);
-	}
-
-	/**
-	 * 清除redis的用户信息
-	 * 
-	 * @author liusonglin
-	 * @date 2018年11月21日
-	 * @param request
-	 */
-
-	public void clearRedisUserInfo(HttpServletRequest request) {
-		SessionUtils.clearBySessionId(request, ConstantUtil.REDIS_USER_SESSIONID);
-	}
 }

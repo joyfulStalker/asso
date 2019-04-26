@@ -32,6 +32,9 @@ public class MenuService {
 
 	@Autowired
 	private TtMenuMapper menuMapper;
+	
+	@Autowired
+	private UserLocal userLocal;
 
 	public List<MenuListDto> menuList() {
 
@@ -133,7 +136,7 @@ public class MenuService {
 		checkMenuData(addDto);
 		TtMenu record = new TtMenu();
 		List<TtMenu> list = null;
-		String userId = UserLocal.getLocalUser().getUserId();
+		String userId = userLocal.getLocalUser().getUserId();
 		if (!"/".equals(addDto.getPath())) {
 			record.setPath(addDto.getPath());
 			record.setDeleteFlag(1);//可用状态
@@ -184,7 +187,7 @@ public class MenuService {
 		if (StringUtils.isEmpty(addDto.getComponent())) {
 			throw AssoException.NO_COMPONENT;
 		}
-		if (null == UserLocal.getLocalUser().getUserId()) {
+		if (null == userLocal.getLocalUser().getUserId()) {
 			throw AssoException.PLE_LOGIN;
 		}
 	}

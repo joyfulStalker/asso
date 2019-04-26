@@ -33,6 +33,9 @@ public class TaskService {
 	@Autowired
 	private QuartzManager quartzManager;
 
+	@Autowired
+	private UserLocal userLocal;
+	
 	public void initSchedule() {
 		List<TtTask> list = taskMapper.select(null);
 		for (TtTask ttTask : list) {
@@ -75,7 +78,7 @@ public class TaskService {
 			BeanUtils.copyProperties(taskDto, task);
 			task.setBeanClass("cn.songlin.quartz.ExecuteJob");
 			task.setCreateTime(new Date());
-			task.setCreateBy(UserLocal.getLocalUser().getUserId());
+			task.setCreateBy(userLocal.getLocalUser().getUserId());
 			task.setJobStatus(taskDto.getJobStatus());
 			taskMapper.insertSelective(task);
 			// 添加任务
@@ -99,7 +102,7 @@ public class TaskService {
 				BeanUtils.copyProperties(task, taskDo);
 				quartzManager.addJob(taskDo);
 			}
-			task.setUpdateBy(UserLocal.getLocalUser().getUserId());
+			task.setUpdateBy(userLocal.getLocalUser().getUserId());
 			task.setUpdateTime(new Date());
 			taskMapper.updateByPrimaryKey(task);
 		}
@@ -126,7 +129,7 @@ public class TaskService {
 			quartzManager.deleteJob(taskDo);
 			task.setJobStatus(JobStatusEnum.STOP.getVal());
 		}
-		task.setUpdateBy(UserLocal.getLocalUser().getUserId());
+		task.setUpdateBy(userLocal.getLocalUser().getUserId());
 		task.setUpdateTime(new Date());
 		taskMapper.updateByPrimaryKeySelective(task);
 	}
@@ -149,7 +152,7 @@ public class TaskService {
 			throw AssoException.PLE_STOP_FIRST;
 		}
 		task.setIsDelete(true);
-		task.setUpdateBy(UserLocal.getLocalUser().getUserId());
+		task.setUpdateBy(userLocal.getLocalUser().getUserId());
 		task.setUpdateTime(new Date());
 		taskMapper.updateByPrimaryKeySelective(task);
 	}

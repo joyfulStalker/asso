@@ -46,6 +46,9 @@ public class TraceLogAspect {
 	@Autowired
 	private TtOnlinepayTrackMapper trackMapper;
 
+	@Autowired
+	private UserLocal userLocal;
+
 	@Around("@annotation(cn.songlin.annotation.TrackLog)")
 	public Object logServiceAccess(ProceedingJoinPoint pjp) {
 
@@ -80,7 +83,7 @@ public class TraceLogAspect {
 
 		entity.setRequestIp(ClientIpUtils.getClientIp(request));// 设置请求者ip地址
 
-		Long userId = UserLocal.getLocalUser().getId();
+		Long userId = userLocal.getLocalUser().getId();
 
 		entity.setUserid(userId == null ? null : userId.toString());
 
