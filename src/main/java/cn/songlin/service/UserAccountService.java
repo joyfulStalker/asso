@@ -96,9 +96,15 @@ public class UserAccountService {
 		// 生成唯一token，作为key，用户信息作为值，写到redis缓存中
 		String token = MyStringUtils.getUUID();
 		logger.info("token值:" + token);
-		redisUtil.hset(ConstantUtil.REDIS_USER_SESSIONID, token, userAccount);
+		/**
+		 * token存活时间
+		 * */
+		long TOKEN_EXPIRE_TIME = 60*60*24*7;
+		logger.info("token存活时间（秒）:" + TOKEN_EXPIRE_TIME);
+		redisUtil.hset(ConstantUtil.REDIS_USER_SESSIONID, token, userAccount,TOKEN_EXPIRE_TIME);
 		// 把token传给前端
 		userAccount.setToken(token);
+		userAccount.setTokenExpireTime(TOKEN_EXPIRE_TIME);
 		return userAccount;
 	}
 

@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONObject;
 import cn.songlin.annotation.Access;
 import cn.songlin.common.dto.LocalUser;
 import cn.songlin.common.utils.ClientIpUtils;
+import cn.songlin.common.utils.UserLocal;
 import cn.songlin.entity.UserLog;
 
 /**
@@ -51,9 +52,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}
 
-		LocalUser userAccount = (LocalUser) request.getSession().getAttribute("sessionId");
-
 		BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+//		LocalUser userAccount = (LocalUser) request.getSession().getAttribute("sessionId");
+		UserLocal userLocal = (UserLocal)factory.getBean("userLocal");
+		LocalUser userAccount = userLocal.getLocalUser();
 		// UserLogMapper userLogMapper = (UserLogMapper)
 		// factory.getBean("userLogMapper");
 		AmqpTemplate template = (AmqpTemplate) factory.getBean("rabbitTemplate");
@@ -63,7 +65,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		userLog.setLogIp(ClientIpUtils.getClientIp(request));
 		userLog.setLogUrl(servletPath);
 		if (userAccount != null) {
-			userLog.setLogUserid(userAccount.getUserId().toString());
+			userLog.setLogUserid(userAccount.getUserId());
 			userLog.setLogUsername(userAccount.getName());
 		}
 		// 记录采用mq转发的形式来做
