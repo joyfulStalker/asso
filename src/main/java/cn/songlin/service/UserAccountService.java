@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -98,10 +99,10 @@ public class UserAccountService {
 		logger.info("token值:" + token);
 		/**
 		 * token存活时间
-		 * */
-		long TOKEN_EXPIRE_TIME = 60*60*24*7;
+		 */
+		long TOKEN_EXPIRE_TIME = 60 * 60 * 24 * 7;
 		logger.info("token存活时间（秒）:" + TOKEN_EXPIRE_TIME);
-		redisUtil.hset(ConstantUtil.REDIS_USER_SESSIONID, token, userAccount,TOKEN_EXPIRE_TIME);
+		redisUtil.hset(ConstantUtil.REDIS_USER_SESSIONID, token, userAccount, TOKEN_EXPIRE_TIME);
 		// 把token传给前端
 		userAccount.setToken(token);
 		userAccount.setTokenExpireTime(TOKEN_EXPIRE_TIME);
@@ -165,6 +166,17 @@ public class UserAccountService {
 		String userId = userLocal.getLocalUser().getUserId();
 		if (null == userId) {
 			throw AssoException.PLE_LOGIN;
+		}
+	}
+
+	/**
+	 * 用户退出
+	 */
+	public void logout() {
+		// 清除redis上用户信息
+		String token = request.getHeader("Authorization");
+		if (!StringUtils.isEmpty(token)) {
+			redisUtil.hdel(ConstantUtil.REDIS_USER_SESSIONID, token);
 		}
 	}
 

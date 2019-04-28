@@ -141,10 +141,8 @@ public class UserAccountController {
 	@PostMapping("logout")
 	@ApiOperation(value = "用户退出登录")
 	@Monitor
-	public ResponseBeanResult logout(@RequestBody UserLoginDto userLoginDto) {
-//		LocalUser userAccount = userAaccountService.login(userLoginDto);
-//		// 写入缓存
-//		SessionUtils.writeSession(request, ConstantUtil.REDIS_USER_SESSIONID, userAccount, 3600);
-		return new ResponseBeanResult("");
+	public ResponseBeanResult logout() {
+		userAaccountService.logout();
+		return new ResponseBeanResult("ok");
 	}
 }
