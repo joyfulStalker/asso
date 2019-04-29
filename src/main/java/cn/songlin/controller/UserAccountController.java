@@ -145,4 +145,11 @@ public class UserAccountController {
 		userAaccountService.logout();
 		return new ResponseBeanResult("ok");
 	}
+	@PostMapping("timerClearInvalidUser")
+	@ApiOperation(value = "定时清除过期用户")
+	@Monitor
+	public ResponseBeanResult timerClearInvalidUser() {
+		userAaccountService.timerClearInvalidUser();
+		return new ResponseBeanResult("ok");
+	}
 }

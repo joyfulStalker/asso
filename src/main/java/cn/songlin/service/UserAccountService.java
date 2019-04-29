@@ -3,6 +3,8 @@ package cn.songlin.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,7 +21,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.songlin.common.constant.ConstantUtil;
 import cn.songlin.common.dto.LocalUser;
 import cn.songlin.common.dto.base.ResponseBeanResult;
 import cn.songlin.common.dto.base.ResponsePageResult;
@@ -53,6 +55,12 @@ public class UserAccountService {
 
 	@Autowired
 	private UserLocal userLocal;
+
+	@Value("${REDIS_USER_SESSIONID}")
+	private String REDIS_USER_SESSIONID;
+
+	@Value("${REDIS_USER_TOKEN_EXPIRE_TIME}")
+	private Long REDIS_USER_TOKEN_EXPIRE_TIME;
 
 	/**
 	 * 用户注册
@@ -97,15 +105,13 @@ public class UserAccountService {
 		// 生成唯一token，作为key，用户信息作为值，写到redis缓存中
 		String token = MyStringUtils.getUUID();
 		logger.info("token值:" + token);
-		/**
-		 * token存活时间
-		 */
-		long TOKEN_EXPIRE_TIME = 60 * 60 * 24 * 7;
-		logger.info("token存活时间（秒）:" + TOKEN_EXPIRE_TIME);
-		redisUtil.hset(ConstantUtil.REDIS_USER_SESSIONID, token, userAccount, TOKEN_EXPIRE_TIME);
 		// 把token传给前端
 		userAccount.setToken(token);
-		userAccount.setTokenExpireTime(TOKEN_EXPIRE_TIME);
+		//当前系统时间
+		userAccount.setSystemTime(System.currentTimeMillis());
+		redisUtil.hset(REDIS_USER_SESSIONID, token, userAccount);
+		// 用于前端过期时间判断和定时清除过期用户判断
+		userAccount.setTokenExpireTime(REDIS_USER_TOKEN_EXPIRE_TIME);
 		return userAccount;
 	}
 
@@ -176,8 +182,26 @@ public class UserAccountService {
 		// 清除redis上用户信息
 		String token = request.getHeader("Authorization");
 		if (!StringUtils.isEmpty(token)) {
-			redisUtil.hdel(ConstantUtil.REDIS_USER_SESSIONID, token);
+			redisUtil.hdel(REDIS_USER_SESSIONID, token);
 		}
+	}
+
+	/**
+	 * 刷新用户登录信息
+	 */
+	public void timerClearInvalidUser() {
+		logger.info("定时任务，清除过期用户开始");
+		Map<Object, Object> userInfos = redisUtil.hmget(REDIS_USER_SESSIONID);
+		Set<Object> keySet = userInfos.keySet();
+		for (Object key : keySet) {
+			LocalUser user = (LocalUser) userInfos.get(key);
+			// 判断过期时间
+			if (user.getSystemTime() + REDIS_USER_TOKEN_EXPIRE_TIME <= System.currentTimeMillis()) {
+				logger.info(user.getNickName() + "的登录账号已过期");
+				redisUtil.hdel(REDIS_USER_SESSIONID, user.getToken());
+			}
+		}
+		logger.info("定时任务，清除过期用户完毕");
 	}
 
 }
