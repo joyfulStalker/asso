@@ -152,4 +152,11 @@ public class UserAccountController {
 		userAaccountService.timerClearInvalidUser();
 		return new ResponseBeanResult("ok");
 	}
+	
+	@PostMapping("flushUserLoginStatus")
+	@ApiOperation(value = "刷新用户登录状态")
+	@Monitor
+	public ResponseBeanResult flushUserLoginStatus() {
+		return new ResponseBeanResult(userAaccountService.flushUserLoginStatus());
+	}
 }

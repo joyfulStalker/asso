@@ -109,9 +109,9 @@ public class UserAccountService {
 		userAccount.setToken(token);
 		//当前系统时间
 		userAccount.setSystemTime(System.currentTimeMillis());
-		redisUtil.hset(REDIS_USER_SESSIONID, token, userAccount);
 		// 用于前端过期时间判断和定时清除过期用户判断
 		userAccount.setTokenExpireTime(REDIS_USER_TOKEN_EXPIRE_TIME);
+		redisUtil.hset(REDIS_USER_SESSIONID, token, userAccount);
 		return userAccount;
 	}
 
@@ -202,6 +202,21 @@ public class UserAccountService {
 			}
 		}
 		logger.info("定时任务，清除过期用户完毕");
+	}
+
+	public LocalUser flushUserLoginStatus() {
+		String token = request.getHeader("Authorization");
+		LocalUser userAccount = (LocalUser)redisUtil.hget(REDIS_USER_SESSIONID, token);
+		userAccount.setSystemTime(System.currentTimeMillis());
+		//删除原来的
+		redisUtil.hdel(REDIS_USER_SESSIONID, token);
+		//重新生成token
+		token = MyStringUtils.getUUID();
+		logger.info("token值:" + token);
+		userAccount.setToken(token);
+		redisUtil.hset(REDIS_USER_SESSIONID, token, userAccount);
+		return userAccount;
+		
 	}
 
 }
